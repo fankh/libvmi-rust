@@ -3,8 +3,17 @@ set -euo pipefail
 
 workspace=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 evidence=${VMI_QEMU_EVIDENCE:-"$workspace/target/qemu-qualification.json"}
+soak_seconds=${VMI_QEMU_SOAK_SECONDS:-10}
+max_rss_growth_kib=${VMI_QEMU_MAX_RSS_GROWTH_KIB:-32768}
+max_fd_growth=${VMI_QEMU_MAX_FD_GROWTH:-16}
 work=$(mktemp -d)
 qemu_pid=
+
+for value in "$soak_seconds" "$max_rss_growth_kib" "$max_fd_growth"; do
+    case "$value" in
+        ''|*[!0-9]*) echo "QEMU soak limits must be non-negative integers" >&2; exit 2 ;;
+    esac
+done
 
 cleanup() {
     if [ -n "$qemu_pid" ]; then
@@ -62,6 +71,24 @@ run() {
     output=$($cli "$@" 2>&1)
     status=$?
     set -e
+    if [ "$name" = read ] && [ "$status" -eq 0 ]; then
+        printf '%s' "$output" >"$work/live-read"
+    fi
+    printf '%s\0%s\0%s\0' "$name" "$status" "$output" >>"$work/results"
+}
+
+run_expected_failure() {
+    name=$1
+    shift
+    set +e
+    output=$($cli "$@" 2>&1)
+    actual_status=$?
+    set -e
+    if [ "$actual_status" -eq 0 ]; then
+        status=1
+    else
+        status=0
+    fi
     printf '%s\0%s\0%s\0' "$name" "$status" "$output" >>"$work/results"
 }
 
@@ -76,8 +103,40 @@ run inspect_range read-raw "$range" 0 16
 run dump qemu-dump 127.0.0.1:4444 "$core"
 run inspect_core read-elf "$core" 0 16
 
+soak_started=$(date +%s)
+soak_deadline=$((soak_started + soak_seconds))
+soak_iterations=0
+initial_rss_kib=$(awk '/^VmRSS:/ { print $2 }' "/proc/$qemu_pid/status")
+initial_fds=$(find "/proc/$qemu_pid/fd" -mindepth 1 -maxdepth 1 | wc -l)
+max_rss_kib=$initial_rss_kib
+max_fds=$initial_fds
+soak_status=0
+while [ "$(date +%s)" -lt "$soak_deadline" ] || [ "$soak_iterations" -eq 0 ]; do
+    status_output=$($cli qemu-status 127.0.0.1:4444 2>&1) || soak_status=1
+    read_output=$($cli qemu-read 127.0.0.1:4444 0 16 2>&1) || soak_status=1
+    if [ "$status_output" != "Running" ] || [ "$read_output" != "$(cat "$work/live-read")" ]; then
+        soak_status=1
+    fi
+    rss_kib=$(awk '/^VmRSS:/ { print $2 }' "/proc/$qemu_pid/status")
+    fds=$(find "/proc/$qemu_pid/fd" -mindepth 1 -maxdepth 1 | wc -l)
+    [ "$rss_kib" -le "$max_rss_kib" ] || max_rss_kib=$rss_kib
+    [ "$fds" -le "$max_fds" ] || max_fds=$fds
+    soak_iterations=$((soak_iterations + 1))
+done
+rss_growth_kib=$((max_rss_kib - initial_rss_kib))
+fd_growth=$((max_fds - initial_fds))
+if [ "$rss_growth_kib" -gt "$max_rss_growth_kib" ] || [ "$fd_growth" -gt "$max_fd_growth" ]; then
+    soak_status=1
+fi
+printf '%s\0%s\0%s\0' soak "$soak_status" "iterations=$soak_iterations rss_growth_kib=$rss_growth_kib fd_growth=$fd_growth" >>"$work/results"
+
+kill "$qemu_pid"
+wait "$qemu_pid" 2>/dev/null || true
+qemu_pid=
+run_expected_failure abrupt_disconnect qemu-status 127.0.0.1:4444
+
 mkdir -p "$(dirname -- "$evidence")"
-python3 - "$work/results" "$evidence" "$(qemu-system-x86_64 --version | head -n 1)" <<'PY'
+python3 - "$work/results" "$evidence" "$(qemu-system-x86_64 --version | head -n 1)" "$soak_seconds" "$soak_iterations" "$rss_growth_kib" "$fd_growth" <<'PY'
 import datetime
 import json
 import pathlib
@@ -98,6 +157,12 @@ document = {
     "timestamp_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
     "host": platform.platform(),
     "qemu": sys.argv[3],
+    "soak": {
+        "requested_seconds": int(sys.argv[4]),
+        "iterations": int(sys.argv[5]),
+        "rss_growth_kib": int(sys.argv[6]),
+        "fd_growth": int(sys.argv[7]),
+    },
     "commands": commands,
     "passed": all(command["status"] == 0 for command in commands),
 }
@@ -108,6 +173,8 @@ semantic_checks = {
     "resume event delivered": "event=RESUME" in by_name["resume_event"]["output"],
     "range bytes match live read": by_name["read"]["output"] == by_name["inspect_range"]["output"],
     "core bytes match live read": by_name["read"]["output"] == by_name["inspect_core"]["output"],
+    "soak completed within resource budgets": by_name["soak"]["status"] == 0,
+    "abrupt disconnect fails closed": by_name["abrupt_disconnect"]["status"] == 0,
 }
 document["semantic_checks"] = semantic_checks
 document["passed"] = document["passed"] and all(semantic_checks.values())

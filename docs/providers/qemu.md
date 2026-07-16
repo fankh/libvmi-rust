@@ -54,4 +54,7 @@ Before changing the provider maturity to Supported and closing the gate:
 
 Run the repeatable real-transport workflow with
 `bash scripts/test-qemu-integration.sh`. The transcript is written to
-`target/qemu-qualification.json` by default.
+`target/qemu-qualification.json` by default. CI runs a 30-second resource-budgeted
+smoke soak. Release candidates use `VMI_QEMU_SOAK_SECONDS=3600` for the required
+one-hour run; RSS and file-descriptor growth limits are configurable through
+`VMI_QEMU_MAX_RSS_GROWTH_KIB` and `VMI_QEMU_MAX_FD_GROWTH`.

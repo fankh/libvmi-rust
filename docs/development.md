@@ -200,7 +200,9 @@ number and unknown-command paths.
 `scripts/test-qemu-integration.sh` requires `qemu-system-x86_64` and Python 3.
 It launches an isolated two-vCPU TCG guest, exercises the public CLI over real
 QMP/GDB transports, re-reads acquired range/core artifacts, and writes a JSON
-qualification transcript under `target/`.
+qualification transcript under `target/`. It also performs a configurable soak,
+enforces QEMU RSS/file-descriptor growth budgets, and verifies abrupt-disconnect
+failure behavior. Set `VMI_QEMU_SOAK_SECONDS=3600` for release qualification.
 ## Documentation Rules
 
 - Update [current implementation](current-implementation.md) when behavior lands.

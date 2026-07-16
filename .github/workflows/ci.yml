@@ -13,6 +13,8 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: sudo apt-get update && sudo apt-get install -y qemu-system-x86 python3
       - run: bash scripts/test-qemu-integration.sh
+        env:
+          VMI_QEMU_SOAK_SECONDS: "30"
       - uses: actions/upload-artifact@v4
         with:
           name: qemu-qualification

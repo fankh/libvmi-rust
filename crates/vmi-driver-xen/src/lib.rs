@@ -921,6 +921,12 @@ mod xenctrl {
                     VmiError::Backend("Xen page offset exceeds host pointer width".into())
                 })?;
                 let length = (4096 - page_offset).min(buffer.len() - completed);
+                let chunk = buffer
+                    .get_mut(completed..)
+                    .and_then(|remaining| remaining.get_mut(..length))
+                    .ok_or_else(|| {
+                        VmiError::Backend("Xen transfer buffer invariant failed".into())
+                    })?;
                 let frame = libc::c_ulong::try_from(current >> 12).map_err(|_| {
                     VmiError::Backend("Xen guest frame number exceeds host c_ulong".into())
                 })?;
@@ -943,9 +949,9 @@ mod xenctrl {
                 unsafe {
                     let pointer = mapping.cast::<u8>().add(page_offset);
                     if write {
-                        ptr::copy_nonoverlapping(buffer[completed..].as_ptr(), pointer, length);
+                        ptr::copy_nonoverlapping(chunk.as_ptr(), pointer, length);
                     } else {
-                        ptr::copy_nonoverlapping(pointer, buffer[completed..].as_mut_ptr(), length);
+                        ptr::copy_nonoverlapping(pointer, chunk.as_mut_ptr(), length);
                     }
                     if libc::munmap(mapping, 4096) != 0 {
                         return Err(VmiError::Backend(format!(
