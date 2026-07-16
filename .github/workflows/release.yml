@@ -17,7 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       CARGO_INCREMENTAL: "0"
-      SOURCE_DATE_EPOCH: "0"
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -45,8 +44,12 @@ jobs:
       - run: cargo deny check
       - run: cargo test --workspace --all-targets --release
       - run: cargo build --release -p vmi-cli -p vmi-ffi
+        env:
+          SOURCE_DATE_EPOCH: "0"
       - name: Verify reproducible release binaries
         shell: bash
+        env:
+          SOURCE_DATE_EPOCH: "0"
         run: |
           set -euo pipefail
           CARGO_TARGET_DIR=target-repro cargo build --release -p vmi-cli -p vmi-ffi
