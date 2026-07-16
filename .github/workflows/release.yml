@@ -1,6 +1,7 @@
 name: libvmi-rust-release
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - "v*"
@@ -19,6 +20,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: sudo apt-get update && sudo apt-get install -y libbz2-dev liblzma-dev libzstd-dev
       - name: Verify tag matches workspace version
+        if: github.event_name == 'push'
         shell: python
         run: |
           import os
@@ -30,7 +32,10 @@ jobs:
           if tag != f"v{version}":
               raise SystemExit(f"tag {tag!r} does not match workspace version v{version}")
       - run: python scripts/verify-package-metadata.py
-      - run: python scripts/verify-release-readiness.py --require-complete
+      - if: github.event_name == 'push'
+        run: python scripts/verify-release-readiness.py --require-complete
+      - if: github.event_name == 'workflow_dispatch'
+        run: python scripts/verify-release-readiness.py
       - run: cargo install cargo-audit --version 0.22.2 --locked
       - run: cargo audit
       - run: cargo install cargo-deny --version 0.20.2 --locked
@@ -43,13 +48,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          release_label=${GITHUB_REF_NAME//\//-}
+          echo "RELEASE_LABEL=$release_label" >> "$GITHUB_ENV"
           mkdir -p dist/cli dist/ffi
           cp target/release/vmi-cli dist/cli/
           cp crates/vmi-cli/vmi-cli.cdx.json README.md dist/cli/
           cp target/release/libvmi_ffi.so target/release/libvmi_ffi.a dist/ffi/
           cp crates/vmi-ffi/include/vmi.h crates/vmi-ffi/vmi-ffi.cdx.json README.md dist/ffi/
-          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-cli-${GITHUB_REF_NAME}-x86_64-unknown-linux-gnu.tar.gz" -C dist/cli .
-          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-ffi-${GITHUB_REF_NAME}-x86_64-unknown-linux-gnu.tar.gz" -C dist/ffi .
+          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-cli-${release_label}-x86_64-unknown-linux-gnu.tar.gz" -C dist/cli .
+          tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-ffi-${release_label}-x86_64-unknown-linux-gnu.tar.gz" -C dist/ffi .
           sha256sum libvmi-rust-*.tar.gz > SHA256SUMS
       - name: Attest CLI provenance and SBOM
         uses: actions/attest@v4
@@ -62,6 +69,16 @@ jobs:
           subject-path: "libvmi-rust-ffi-*.tar.gz"
           sbom-path: "crates/vmi-ffi/vmi-ffi.cdx.json"
       - name: Publish GitHub release
+        if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh release create "$GITHUB_REF_NAME" libvmi-rust-*.tar.gz SHA256SUMS --verify-tag --generate-notes
+      - name: Retain candidate bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-candidate-${{ env.RELEASE_LABEL }}
+          path: |
+            libvmi-rust-*.tar.gz
+            SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30

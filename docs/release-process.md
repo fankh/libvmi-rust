@@ -6,6 +6,12 @@ the workspace package version, and every critical gate in
 without requiring completion; the tag workflow invokes the validator's strict
 `--require-complete` mode.
 
+A manual run builds and attests a release candidate from the selected branch or
+commit while validating the ledger without requiring completion. It never creates
+a GitHub release. This candidate path exists so checksum, SBOM, provenance, and
+independent verification evidence can be produced before their gates are closed;
+final publication remains tag-only and strict.
+
 ## Candidate Procedure
 
 1. Freeze the public facade and review `docs/public-api.txt` plus migration notes.
