@@ -37,13 +37,18 @@ Every critical gate in `release-readiness.toml` must be `complete`. In addition:
 
 - **Supported target**: raw dump, manifest snapshots, converted/offline cores,
   VirtualBox cores, and QEMU.
-- **Preview target**: Xen and live VirtualBox.
-- **Experimental target**: Firecracker, Cloud Hypervisor, Hyper-V live/saved-state,
-  VMware live artifacts, and bhyve integrations.
+- **Preview target**: Xen.
+- **Experimental target**: live VirtualBox, Firecracker, Cloud Hypervisor,
+  Hyper-V live/saved-state, VMware live artifacts, and bhyve integrations.
 - **Internal**: the deterministic fake provider.
 
 KVMi and a custom kernel module are post-v1 research unless a separate release
 decision adds them to both the provider matrix and readiness ledger.
+
+Guest OS adapters and profile parsers ship as tested APIs, but broad kernel-build
+compatibility is not a v1 production claim. The real-guest matrix remains post-v1
+qualification work and cannot expand the v1 support contract without retained
+artifact evidence.
 
 ## Status Changes
 

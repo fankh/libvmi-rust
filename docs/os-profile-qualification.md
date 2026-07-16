@@ -1,8 +1,8 @@
 # Guest OS and Profile Qualification
 
-The `os-profiles` release gate covers guest compatibility, not merely whether the
-portable Rust crates compile on a host operating system. It remains in progress
-until the real-artifact matrix below is complete.
+The `os-profiles` release gate separates parser/adapter safety from broad guest
+compatibility. Parser and adapter qualification is complete for v1; the real-
+artifact matrix below is explicitly deferred and is not a v1 production claim.
 
 ## Current Contract
 
@@ -34,10 +34,10 @@ accepted limitation. Guest images and vendor symbols must not be committed when
 their licenses prohibit redistribution; store only metadata, digests, and test
 results.
 
-## Exit Criteria
+## Post-v1 Promotion Criteria
 
-The gate may become complete only after all four rows pass on immutable memory
-artifacts, corruption variants demonstrate bounded failure, and the evidence is
-retained by a release workflow. A kernel/profile mismatch, absent required symbol,
+Broad guest compatibility may be claimed only after all four rows pass on immutable
+memory artifacts, corruption variants demonstrate bounded failure, and the evidence
+is retained by a release workflow. A kernel/profile mismatch, absent required symbol,
 invalid pointer, traversal cycle, or unsupported layout must return a typed error
 without partial success being presented as a complete inventory.

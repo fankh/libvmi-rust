@@ -2,8 +2,8 @@
 
 ## v1 Contract
 
-The `virtualbox` live provider targets Preview for VirtualBox 7.2.x on Linux,
-Windows, and macOS hosts. It advertises physical-memory read, register read,
+The `virtualbox` live provider remains Experimental for v1 on Linux, Windows, and
+macOS hosts. It advertises physical-memory read, register read,
 control, and acquisition. Register write is optional and must be explicitly
 enabled only with a transport whose vendor build implements it.
 
@@ -38,7 +38,7 @@ hard-link publication so a concurrently created destination is never overwritten
   `IMachineDebugger::setRegister`; it is not advertised by the default connector.
 - The provider exposes management events only through portable mechanisms it can
   verify; it does not claim guest memory-access events or alternate views.
-- Preview promotion requires the same real-host status/register/control/core suite
+- Post-v1 Preview promotion requires the same real-host status/register/control/core suite
   on each claimed host OS, plus permission, disk-full, process termination, and
   repeated-acquisition resource tests. Current retained evidence covers a real
   VirtualBox 7.2.12 host and deterministic cross-platform transport contracts, but

@@ -31,8 +31,8 @@ evidence = ["crates/vmi-driver-xen", "docs/providers/xen.md", "docs/unsafe-code-
 
 [[gates]]
 id = "virtualbox-preview"
-title = "VirtualBox preview-tier qualification"
-status = "in-progress"
+title = "VirtualBox live-provider explicit v1 deferral"
+status = "complete"
 critical = true
 evidence = ["crates/vmi-driver-virtualbox", "docs/providers/virtualbox.md"]
 
@@ -45,8 +45,8 @@ evidence = ["support-matrix.toml", "docs/providers/artifacts-and-secondary.md"]
 
 [[gates]]
 id = "os-profiles"
-title = "guest OS and profile compatibility qualification"
-status = "in-progress"
+title = "OS/profile parser qualification and real-guest matrix deferral"
+status = "complete"
 critical = true
 evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile", "docs/os-profile-qualification.md"]
 
