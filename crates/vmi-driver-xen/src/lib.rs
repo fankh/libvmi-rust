@@ -920,7 +920,13 @@ mod xenctrl {
                 let page_offset = usize::try_from(current & 0xfff).map_err(|_| {
                     VmiError::Backend("Xen page offset exceeds host pointer width".into())
                 })?;
-                let length = (4096 - page_offset).min(buffer.len() - completed);
+                let page_remaining = 4096usize
+                    .checked_sub(page_offset)
+                    .ok_or_else(|| VmiError::Backend("Xen page offset invariant failed".into()))?;
+                let buffer_remaining = buffer.len().checked_sub(completed).ok_or_else(|| {
+                    VmiError::Backend("Xen transfer progress invariant failed".into())
+                })?;
+                let length = page_remaining.min(buffer_remaining);
                 let chunk = buffer
                     .get_mut(completed..)
                     .and_then(|remaining| remaining.get_mut(..length))
@@ -959,7 +965,9 @@ mod xenctrl {
                         )));
                     }
                 }
-                completed += length;
+                completed = completed
+                    .checked_add(length)
+                    .ok_or_else(|| VmiError::Backend("Xen transfer progress overflow".into()))?;
             }
             Ok(())
         }

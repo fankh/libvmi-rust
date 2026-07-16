@@ -66,6 +66,7 @@ cargo deny check
 cargo package --workspace --allow-dirty
 bash scripts/test-c-abi.sh
 bash scripts/test-cli.sh
+bash scripts/build-qemu.sh
 bash scripts/test-qemu-integration.sh
 ```
 

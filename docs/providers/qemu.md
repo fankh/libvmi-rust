@@ -2,7 +2,7 @@
 
 ## v1 Contract
 
-The `qemu-qmp` provider targets the Supported tier for QEMU 11 on Linux hosts.
+The `qemu-qmp` provider targets the Supported tier for QEMU 11.0.2 on Linux hosts.
 TCP QMP is portable and Unix QMP sockets are supported on Unix hosts, but Windows
 and macOS remain compatibility-build platforms until the same real-host matrix is
 recorded there. AMD64 guests are qualified; other guest architectures fail outside
@@ -32,7 +32,7 @@ need a coherent image must pause the VM or acquire an immutable core.
 
 Before changing the provider maturity to Supported and closing the gate:
 
-1. Run the real-host workflow on the pinned Linux QEMU 11 image from a clean CI
+1. Run the real-host workflow on the pinned Linux QEMU 11.0.2 build from a clean CI
    runner and retain its machine-readable transcript as a release artifact.
 2. Execute a minimum one-hour reconnect/control/read/acquisition soak with bounded
    memory and file-descriptor growth.
@@ -58,3 +58,7 @@ Run the repeatable real-transport workflow with
 smoke soak. Release candidates use `VMI_QEMU_SOAK_SECONDS=3600` for the required
 one-hour run; RSS and file-descriptor growth limits are configurable through
 `VMI_QEMU_MAX_RSS_GROWTH_KIB` and `VMI_QEMU_MAX_FD_GROWTH`.
+
+`bash scripts/build-qemu.sh` builds the reviewed upstream QEMU 11.0.2 source
+tarball with a pinned SHA-256 and a minimal x86_64 TCG configuration. CI caches
+the installation but validates its reported version before use.
