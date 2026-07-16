@@ -25,23 +25,23 @@ evidence = ["crates/vmi-driver-qemu", "docs/providers/qemu.md"]
 [[gates]]
 id = "xen-preview"
 title = "Xen preview-tier qualification"
-status = "pending"
+status = "in-progress"
 critical = true
-evidence = ["crates/vmi-driver-xen", "docs/unsafe-code-inventory.md"]
+evidence = ["crates/vmi-driver-xen", "docs/providers/xen.md", "docs/unsafe-code-inventory.md"]
 
 [[gates]]
 id = "virtualbox-preview"
 title = "VirtualBox preview-tier qualification"
-status = "pending"
+status = "in-progress"
 critical = true
-evidence = ["crates/vmi-driver-virtualbox", "docs/current-implementation.md"]
+evidence = ["crates/vmi-driver-virtualbox", "docs/providers/virtualbox.md"]
 
 [[gates]]
 id = "secondary-providers"
 title = "secondary provider completion or explicit deferral"
-status = "pending"
+status = "complete"
 critical = true
-evidence = ["support-matrix.toml"]
+evidence = ["support-matrix.toml", "docs/providers/artifacts-and-secondary.md"]
 
 [[gates]]
 id = "os-profiles"

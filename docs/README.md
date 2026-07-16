@@ -11,6 +11,9 @@ functionality.
 | [Current implementation](current-implementation.md) | What is implemented, tested, and still missing |
 | [Production readiness](production-readiness.md) | v1 provider tiers, release gates, and exit criteria |
 | [QEMU provider qualification](providers/qemu.md) | Supported-tier contract, evidence, and remaining real-host gates |
+| [Xen provider qualification](providers/xen.md) | Preview-tier capability activation, evidence, and native-host limits |
+| [VirtualBox provider qualification](providers/virtualbox.md) | Preview-tier transport evidence and vendor limitations |
+| [Artifact and secondary providers](providers/artifacts-and-secondary.md) | Supported artifact evidence and explicit v1 deferrals |
 | [Development guide](development.md) | Build, test, lint, and documentation commands |
 | [Provider authoring guide](provider-authoring.md) | Implement and validate a capability-accurate provider |
 | [Compatibility policy](compatibility-policy.md) | Semver rules and public facade drift enforcement |

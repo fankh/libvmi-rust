@@ -61,6 +61,11 @@ LibVMI is a foundational C library for **Virtual Machine Introspection (VMI)** â
 
 This research investigates the current state of LibVMI, the emerging Rust VMI ecosystem, and provides a concrete implementation plan for building a production-grade VMI solution in Rust.
 
+> The ecosystem and hypervisor sections below are research background, not this
+> crate's support claims. Current provider maturity and capabilities are defined
+> only by [`support-matrix.toml`](support-matrix.toml); in particular, this
+> workspace's Xen provider targets Preview rather than production support.
+
 ## The Semantic Gap Problem
 
 ```mermaid
@@ -141,9 +146,9 @@ libvmi-rust/
 | **OS Profiles** | Parse Windows (EPROCESS), Linux (task_struct), FreeBSD kernel structures |
 | **VM Control** | Pause/resume guest VMs |
 
-### Hypervisor Support
+### Reference LibVMI Hypervisor Support
 
-| Hypervisor | Memory R/W | Registers | Events | Status |
+| Hypervisor | Memory R/W | Registers | Events | Ecosystem status |
 |-----------|-----------|-----------|--------|--------|
 | **Xen** | Full | Full | Full (EPT) | Production-ready |
 | **KVM** | Yes | Yes | **No** | KVMi patches not upstream |
