@@ -14,6 +14,11 @@ timestamp and random serial UUID, canonicalizes the checkout URI, and sorts JSON
 keys. Archives use sorted paths, a fixed timestamp, numeric ownership, and SHA-256
 checksums.
 
+The release workflow builds the CLI, shared C ABI library, and static C ABI library
+twice into isolated Cargo target directories with incremental compilation disabled
+and a fixed source epoch. Every binary must compare byte-for-byte before packaging
+or attestation proceeds.
+
 GitHub Actions signs the archive subject digests and their SBOM claims through
 Sigstore-backed artifact attestations. Verify a downloaded archive before use:
 

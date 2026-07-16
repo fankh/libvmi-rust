@@ -15,6 +15,9 @@ jobs:
   release:
     name: Build, attest, and publish release artifacts
     runs-on: ubuntu-latest
+    env:
+      CARGO_INCREMENTAL: "0"
+      SOURCE_DATE_EPOCH: "0"
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -42,6 +45,14 @@ jobs:
       - run: cargo deny check
       - run: cargo test --workspace --all-targets --release
       - run: cargo build --release -p vmi-cli -p vmi-ffi
+      - name: Verify reproducible release binaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          CARGO_TARGET_DIR=target-repro cargo build --release -p vmi-cli -p vmi-ffi
+          cmp target/release/vmi-cli target-repro/release/vmi-cli
+          cmp target/release/libvmi_ffi.so target-repro/release/libvmi_ffi.so
+          cmp target/release/libvmi_ffi.a target-repro/release/libvmi_ffi.a
       - run: cargo install cargo-cyclonedx --version 0.5.9 --locked
       - run: cargo cyclonedx --format json --all-features
       - name: Normalize release SBOMs
