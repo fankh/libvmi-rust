@@ -6,7 +6,7 @@ that extends beyond the 64-bit guest-physical address space. The existing
 `SnapshotBundle::from_raw` remains available for source compatibility and for
 already-validated in-memory mappings.
 
-## Unreleased to 0.1.0
+## Unreleased to 1.0.0
 
 The initial release establishes:
 

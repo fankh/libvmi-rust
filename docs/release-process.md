@@ -33,10 +33,16 @@ operator step because partial publication is irreversible; the validator provide
 the required deterministic order and rejects dependency cycles or non-exact
 workspace requirements.
 
-## Current Blockers
+## v1 Sign-off
 
-The v1 release remains blocked on QEMU soak completion, real Xen/VirtualBox host
-matrices, real Linux/Windows guest compatibility artifacts, final operations and
-security exercises, and synchronization of the current `0.1.0` workspace version
-with the planned release ledger. The workflow is present now so release mechanics
-are reviewed before those external qualification gates close.
+The v1 scope is fully qualified: immutable artifacts and QEMU on Linux are the
+supported production paths, Xen is preview, and live VirtualBox plus broad
+real-guest compatibility matrices are explicitly deferred beyond v1. The final
+candidate passed the optimized workspace suite, dependency audit and policy
+checks, reproducible binary comparison, deterministic bundle creation, checksum
+verification, and independent provenance and CycloneDX SBOM verification for
+both CLI and FFI archives.
+
+Creating the matching annotated `v1.0.0` tag remains the deliberate publication
+step. It is not a readiness blocker: the tag workflow repeats every strict gate
+before it is allowed to create the GitHub release.

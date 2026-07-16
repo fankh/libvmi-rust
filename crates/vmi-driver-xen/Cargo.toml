@@ -11,9 +11,9 @@ keywords.workspace = true
 categories.workspace = true
 
 [dependencies]
-vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
-vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
-vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+vmi-artifact = { version = "=1.0.0", path = "../vmi-artifact" }
+vmi-driver-api = { version = "=1.0.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2"

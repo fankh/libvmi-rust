@@ -14,9 +14,9 @@ categories.workspace = true
 workspace = true
 
 [dependencies]
-vmi-arch-api = { version = "=0.1.0", path = "../vmi-arch-api" }
-vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
-vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+vmi-arch-api = { version = "=1.0.0", path = "../vmi-arch-api" }
+vmi-driver-api = { version = "=1.0.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }
 
 [dev-dependencies]
 proptest.workspace = true

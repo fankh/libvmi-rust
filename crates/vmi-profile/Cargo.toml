@@ -16,4 +16,4 @@ workspace = true
 [dependencies]
 pdb = "0.8"
 serde_json.workspace = true
-vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }

@@ -14,5 +14,5 @@ categories.workspace = true
 crate-type = ["cdylib", "staticlib", "rlib"]
 
 [dependencies]
-vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
-vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+vmi-artifact = { version = "=1.0.0", path = "../vmi-artifact" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }

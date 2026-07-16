@@ -60,13 +60,13 @@ evidence = ["docs/performance-baselines.md", "docs/development.md", "docs/operat
 [[gates]]
 id = "security-supply-chain"
 title = "security, unsafe, dependency, fuzz, and reproducibility qualification"
-status = "in-progress"
+status = "complete"
 critical = true
 evidence = ["docs/unsafe-code-inventory.md", "docs/fixture-policy.md", "docs/supply-chain-security.md", ".github/workflows/release.yml"]
 
 [[gates]]
 id = "release-engineering"
 title = "API freeze, packages, SBOM, signed artifacts, RC soak, and go/no-go"
-status = "in-progress"
+status = "complete"
 critical = true
 evidence = ["docs/migration.md", "docs/compatibility-policy.md", "docs/release-process.md", ".github/workflows/release.yml"]

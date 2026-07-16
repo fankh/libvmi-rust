@@ -36,11 +36,25 @@ class ReleaseReadinessValidatorTests(unittest.TestCase):
         self.assertEqual(validator.main(), 0)
 
     def test_incomplete_critical_gate_blocks_release_mode(self) -> None:
-        self.assertEqual(validator.main(require_complete=True), 1)
+        document = validator.LEDGER.read_text(encoding="utf-8").replace(
+            'status = "complete"', 'status = "in-progress"', 1
+        )
+        with tempfile.TemporaryDirectory() as temporary:
+            ledger = Path(temporary) / "release-readiness.toml"
+            ledger.write_text(document, encoding="utf-8")
+            original = validator.LEDGER
+            validator.LEDGER = ledger
+            try:
+                with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(
+                    io.StringIO()
+                ):
+                    self.assertEqual(validator.main(require_complete=True), 1)
+            finally:
+                validator.LEDGER = original
 
     def test_unknown_status_fails(self) -> None:
         document = validator.LEDGER.read_text(encoding="utf-8").replace(
-            'status = "in-progress"', 'status = "maybe"', 1
+            'status = "complete"', 'status = "maybe"', 1
         )
         self.assertEqual(self.run_document(document), 1)
 

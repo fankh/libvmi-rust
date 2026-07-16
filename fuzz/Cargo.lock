@@ -373,7 +373,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-artifact"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "bzip2",
  "flate2",
@@ -394,7 +394,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-profile"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "pdb",
  "serde_json",
@@ -403,7 +403,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-types"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "bitflags",
  "thiserror",

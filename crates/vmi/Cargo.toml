@@ -14,26 +14,26 @@ categories.workspace = true
 workspace = true
 
 [dependencies]
-vmi-arch-aarch64 = { version = "=0.1.0", path = "../vmi-arch-aarch64" }
-vmi-arch-amd64 = { version = "=0.1.0", path = "../vmi-arch-amd64" }
-vmi-arch-api = { version = "=0.1.0", path = "../vmi-arch-api" }
-vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
-vmi-core = { version = "=0.1.0", path = "../vmi-core" }
-vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
-vmi-driver-dump = { version = "=0.1.0", path = "../vmi-driver-dump" }
-vmi-driver-qemu = { version = "=0.1.0", path = "../vmi-driver-qemu" }
-vmi-driver-snapshot = { version = "=0.1.0", path = "../vmi-driver-snapshot" }
-vmi-driver-virtualbox = { version = "=0.1.0", path = "../vmi-driver-virtualbox" }
-vmi-driver-xen = { version = "=0.1.0", path = "../vmi-driver-xen" }
-vmi-events = { version = "=0.1.0", path = "../vmi-events" }
-vmi-os-linux = { version = "=0.1.0", path = "../vmi-os-linux" }
-vmi-os-windows = { version = "=0.1.0", path = "../vmi-os-windows" }
-vmi-profile = { version = "=0.1.0", path = "../vmi-profile" }
-vmi-types = { version = "=0.1.0", path = "../vmi-types" }
-vmi-views = { version = "=0.1.0", path = "../vmi-views" }
+vmi-arch-aarch64 = { version = "=1.0.0", path = "../vmi-arch-aarch64" }
+vmi-arch-amd64 = { version = "=1.0.0", path = "../vmi-arch-amd64" }
+vmi-arch-api = { version = "=1.0.0", path = "../vmi-arch-api" }
+vmi-artifact = { version = "=1.0.0", path = "../vmi-artifact" }
+vmi-core = { version = "=1.0.0", path = "../vmi-core" }
+vmi-driver-api = { version = "=1.0.0", path = "../vmi-driver-api" }
+vmi-driver-dump = { version = "=1.0.0", path = "../vmi-driver-dump" }
+vmi-driver-qemu = { version = "=1.0.0", path = "../vmi-driver-qemu" }
+vmi-driver-snapshot = { version = "=1.0.0", path = "../vmi-driver-snapshot" }
+vmi-driver-virtualbox = { version = "=1.0.0", path = "../vmi-driver-virtualbox" }
+vmi-driver-xen = { version = "=1.0.0", path = "../vmi-driver-xen" }
+vmi-events = { version = "=1.0.0", path = "../vmi-events" }
+vmi-os-linux = { version = "=1.0.0", path = "../vmi-os-linux" }
+vmi-os-windows = { version = "=1.0.0", path = "../vmi-os-windows" }
+vmi-profile = { version = "=1.0.0", path = "../vmi-profile" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }
+vmi-views = { version = "=1.0.0", path = "../vmi-views" }
 
 [dev-dependencies]
-vmi-testkit = { version = "=0.1.0", path = "../vmi-testkit" }
+vmi-testkit = { version = "=1.0.0", path = "../vmi-testkit" }
 
 [[bench]]
 name = "core"

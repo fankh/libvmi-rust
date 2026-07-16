@@ -565,7 +565,7 @@ dependencies = [
 
 [[package]]
 name = "vmi"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-arch-aarch64",
  "vmi-arch-amd64",
@@ -589,7 +589,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-arch-aarch64"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "proptest",
  "vmi-arch-api",
@@ -599,7 +599,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-arch-amd64"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "proptest",
  "vmi-arch-api",
@@ -609,7 +609,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-arch-api"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-driver-api",
  "vmi-types",
@@ -617,7 +617,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-artifact"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "bzip2",
  "flate2",
@@ -629,7 +629,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-cli"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-arch-amd64",
  "vmi-artifact",
@@ -645,7 +645,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-core"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-arch-api",
  "vmi-driver-api",
@@ -655,14 +655,14 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-api"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-types",
 ]
 
 [[package]]
 name = "vmi-driver-dump"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-artifact",
  "vmi-driver-api",
@@ -671,7 +671,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-qemu"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "proptest",
  "serde_json",
@@ -681,7 +681,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-snapshot"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-artifact",
  "vmi-driver-api",
@@ -690,7 +690,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-virtualbox"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "proptest",
  "vmi-artifact",
@@ -700,7 +700,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-xen"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "libc",
  "libloading",
@@ -712,7 +712,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-events"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-driver-api",
  "vmi-types",
@@ -720,7 +720,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-ffi"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-artifact",
  "vmi-types",
@@ -728,7 +728,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-os-linux"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-arch-api",
  "vmi-core",
@@ -740,7 +740,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-os-windows"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-arch-api",
  "vmi-core",
@@ -752,7 +752,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-profile"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "pdb",
  "serde_json",
@@ -761,7 +761,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-testkit"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-driver-api",
  "vmi-types",
@@ -769,7 +769,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-types"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "bitflags",
  "proptest",
@@ -778,7 +778,7 @@ dependencies = [
 
 [[package]]
 name = "vmi-views"
-version = "0.1.0"
+version = "1.0.0"
 dependencies = [
  "vmi-driver-api",
  "vmi-types",
