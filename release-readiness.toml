@@ -25,7 +25,7 @@ evidence = ["crates/vmi-driver-qemu", "docs/providers/qemu.md"]
 [[gates]]
 id = "xen-preview"
 title = "Xen preview-tier qualification"
-status = "in-progress"
+status = "complete"
 critical = true
 evidence = ["crates/vmi-driver-xen", "docs/providers/xen.md", "docs/unsafe-code-inventory.md"]
 
