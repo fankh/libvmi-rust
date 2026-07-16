@@ -20,6 +20,7 @@ functionality.
 | [Compatibility policy](compatibility-policy.md) | Semver rules and public facade drift enforcement |
 | [Migration guide](migration.md) | Release-to-release application migration notes |
 | [Performance baselines](performance-baselines.md) | Reproducible core benchmarks and regression comparison |
+| [Operations qualification](operations.md) | Resource budgets, diagnostics, recovery, and incident evidence |
 | [Fixture policy](fixture-policy.md) | Integrity, provenance, licensing, and inventory rules for persistent test inputs |
 | [Unsafe code inventory](unsafe-code-inventory.md) | Audited FFI/native boundaries and their invariants |
 | [Implementation plan](../implementation-plan.md) | Authoritative roadmap and proposed workspace |

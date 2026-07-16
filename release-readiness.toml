@@ -53,9 +53,9 @@ evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile"
 [[gates]]
 id = "operations"
 title = "diagnostics, resource budgets, load, fault, and recovery qualification"
-status = "pending"
+status = "in-progress"
 critical = true
-evidence = ["docs/performance-baselines.md", "docs/development.md"]
+evidence = ["docs/performance-baselines.md", "docs/development.md", "docs/operations.md"]
 
 [[gates]]
 id = "security-supply-chain"
