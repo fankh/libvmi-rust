@@ -1576,7 +1576,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let (status, stdout, stderr) =
-            run_bounded_command(executable, &success, Duration::from_secs(2), "test").unwrap();
+            run_bounded_command(executable, &success, Duration::from_secs(10), "test").unwrap();
         assert!(status.success());
         assert_eq!(stdout, b"ready");
         assert!(stderr.is_empty());

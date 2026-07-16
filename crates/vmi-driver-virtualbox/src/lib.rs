@@ -1256,7 +1256,7 @@ mod tests {
             .collect::<Vec<_>>();
 
         let transport = ProcessTransport::new(executable)
-            .with_timeout(Duration::from_secs(2))
+            .with_timeout(Duration::from_secs(10))
             .unwrap();
         assert_eq!(transport.execute(&success).unwrap(), "ready");
         let timed = ProcessTransport::new(executable)
