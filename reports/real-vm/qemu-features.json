@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "provider": "qemu-qmp",
+  "timestamp_utc": "2026-07-16T05:25:16.084140+00:00",
+  "host": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "qemu": "QEMU emulator version 7.2.22 (Debian 1:7.2+dfsg-7+deb12u18+b3)",
+  "soak": {
+    "requested_seconds": 60,
+    "iterations": 474,
+    "rss_growth_kib": 0,
+    "fd_growth": 0
+  },
+  "commands": [
+    {
+      "name": "status",
+      "status": 0,
+      "output": "Running"
+    },
+    {
+      "name": "register",
+      "status": 0,
+      "output": "vCPU 0 RIP=0x000000000000b7b9"
+    },
+    {
+      "name": "read",
+      "status": 0,
+      "output": "0000000000000000: 53 ff 00 f0 53 ff 00 f0 c3 e2 00 f0 53 ff 00 f0"
+    },
+    {
+      "name": "pause",
+      "status": 0,
+      "output": "Paused"
+    },
+    {
+      "name": "paused_status",
+      "status": 0,
+      "output": "Paused"
+    },
+    {
+      "name": "resume_event",
+      "status": 0,
+      "output": "event=RESUME vcpu=- address=-"
+    },
+    {
+      "name": "acquire",
+      "status": 0,
+      "output": "saved 4096 bytes from GPA 0x0 to /tmp/tmp.UrW7y67I33/range.bin"
+    },
+    {
+      "name": "inspect_range",
+      "status": 0,
+      "output": "0000000000000000: 53 ff 00 f0 53 ff 00 f0 c3 e2 00 f0 53 ff 00 f0"
+    },
+    {
+      "name": "dump",
+      "status": 0,
+      "output": "saved QEMU ELF VM core to /tmp/tmp.UrW7y67I33/core.elf"
+    },
+    {
+      "name": "inspect_core",
+      "status": 0,
+      "output": "0000000000000000: 53 ff 00 f0 53 ff 00 f0 c3 e2 00 f0 53 ff 00 f0"
+    },
+    {
+      "name": "soak",
+      "status": 0,
+      "output": "iterations=474 rss_growth_kib=0 fd_growth=0"
+    },
+    {
+      "name": "abrupt_disconnect",
+      "status": 0,
+      "output": "error: backend error: Connection refused (os error 111)"
+    }
+  ],
+  "passed": true,
+  "semantic_checks": {
+    "initial state is running": true,
+    "pause changes state": true,
+    "resume event delivered": true,
+    "range bytes match live read": true,
+    "core bytes match live read": true,
+    "soak completed within resource budgets": true,
+    "abrupt disconnect fails closed": true
+  }
+}

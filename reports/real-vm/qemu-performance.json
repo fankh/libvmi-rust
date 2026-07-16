@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "provider": "qemu-qmp",
+  "host": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+  "qemu": "QEMU emulator version 7.2.22 (Debian 1:7.2+dfsg-7+deb12u18+b3)",
+  "configuration": {
+    "acceleration": "tcg",
+    "vcpus": 2,
+    "memory_mib": 64,
+    "command_iterations": 100,
+    "acquire_iterations": 8,
+    "acquire_bytes": 1048576
+  },
+  "metrics": {
+    "status_command": {
+      "mean_ms": 58.616,
+      "median_ms": 59.454,
+      "p95_ms": 60.676,
+      "minimum_ms": 55.345,
+      "maximum_ms": 62.644
+    },
+    "read_4k_command": {
+      "mean_ms": 720.962,
+      "median_ms": 720.31,
+      "p95_ms": 724.469,
+      "minimum_ms": 717.151,
+      "maximum_ms": 726.519
+    },
+    "acquire_1mib_command": {
+      "mean_ms": 59.772,
+      "median_ms": 59.949,
+      "p95_ms": 60.017,
+      "minimum_ms": 57.579,
+      "maximum_ms": 62.149
+    },
+    "acquire_mib_s": 16.73
+  },
+  "passed": true
+}
