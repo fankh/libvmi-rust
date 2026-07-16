@@ -35,9 +35,12 @@ class ReleaseReadinessValidatorTests(unittest.TestCase):
     def test_committed_ledger_passes(self) -> None:
         self.assertEqual(validator.main(), 0)
 
+    def test_incomplete_critical_gate_blocks_release_mode(self) -> None:
+        self.assertEqual(validator.main(require_complete=True), 1)
+
     def test_unknown_status_fails(self) -> None:
         document = validator.LEDGER.read_text(encoding="utf-8").replace(
-            'status = "pending"', 'status = "maybe"', 1
+            'status = "in-progress"', 'status = "maybe"', 1
         )
         self.assertEqual(self.run_document(document), 1)
 

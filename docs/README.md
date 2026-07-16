@@ -23,6 +23,8 @@ functionality.
 | [Operations qualification](operations.md) | Resource budgets, diagnostics, recovery, and incident evidence |
 | [Fixture policy](fixture-policy.md) | Integrity, provenance, licensing, and inventory rules for persistent test inputs |
 | [Unsafe code inventory](unsafe-code-inventory.md) | Audited FFI/native boundaries and their invariants |
+| [Supply-chain security](supply-chain-security.md) | Dependency, SBOM, provenance, and release verification controls |
+| [Release process](release-process.md) | Tag, readiness, build, attestation, and publication procedure |
 | [Implementation plan](../implementation-plan.md) | Authoritative roadmap and proposed workspace |
 | [Provider support matrix](support-matrix.md) | Generated human-readable capability and maturity claims |
 | [Provider support contract](../support-matrix.toml) | Authoritative machine-readable provider claims |

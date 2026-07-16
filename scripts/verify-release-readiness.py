@@ -19,7 +19,7 @@ def fail(message: str) -> None:
     raise ValueError(f"{LEDGER.name}: {message}")
 
 
-def main() -> int:
+def main(require_complete: bool = False) -> int:
     try:
         document = tomllib.loads(LEDGER.read_text(encoding="utf-8"))
         if set(document) != {"schema_version", "release", "gates"}:
@@ -49,6 +49,8 @@ def main() -> int:
                 fail(f"gate {gate_id!r} has invalid status {gate['status']!r}")
             if not isinstance(gate["critical"], bool):
                 fail(f"gate {gate_id!r} critical must be boolean")
+            if require_complete and gate["critical"] and gate["status"] != "complete":
+                fail(f"critical gate {gate_id!r} is not complete")
             evidence = gate["evidence"]
             if not isinstance(evidence, list) or not evidence:
                 fail(f"gate {gate_id!r} evidence must be non-empty")
@@ -70,4 +72,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    arguments = sys.argv[1:]
+    if arguments not in ([], ["--require-complete"]):
+        print("usage: verify-release-readiness.py [--require-complete]", file=sys.stderr)
+        raise SystemExit(2)
+    raise SystemExit(main(require_complete=bool(arguments)))

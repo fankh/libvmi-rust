@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 EXPECTED_LICENSE = "MIT OR Apache-2.0"
-EXPECTED_REPOSITORY = "https://github.com/fankh/new-research"
+EXPECTED_REPOSITORY = "https://github.com/fankh/libvmi-rust"
 EXPECTED_RUST_VERSION = "1.85"
 EXPECTED_KEYWORDS = {"forensics", "memory", "virtualization", "vmi"}
 EXPECTED_CATEGORIES = {"development-tools::debugging", "virtualization"}
