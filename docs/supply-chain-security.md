@@ -14,6 +14,11 @@ timestamp and random serial UUID, canonicalizes the checkout URI, and sorts JSON
 keys. Archives use sorted paths, a fixed timestamp, numeric ownership, and SHA-256
 checksums.
 
+GitHub's SBOM predicate is generated from the unmodified CycloneDX tool output for
+compatibility with the attestation action. The corresponding archive contains the
+semantically equivalent normalized BOM; provenance separately signs the exact
+archive digest.
+
 The release workflow builds the CLI, shared C ABI library, and static C ABI library
 twice into isolated Cargo target directories with incremental compilation disabled
 and a fixed source epoch. Every binary must compare byte-for-byte before packaging

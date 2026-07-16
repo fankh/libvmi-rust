@@ -55,6 +55,11 @@ jobs:
           cmp target/release/libvmi_ffi.a target-repro/release/libvmi_ffi.a
       - run: cargo install cargo-cyclonedx --version 0.5.9 --locked
       - run: cargo cyclonedx --format json --all-features
+      - name: Preserve generator SBOMs for attestation
+        run: |
+          mkdir -p target/attestation-sbom
+          cp crates/vmi-cli/vmi-cli.cdx.json target/attestation-sbom/vmi-cli.cdx.json
+          cp crates/vmi-ffi/vmi-ffi.cdx.json target/attestation-sbom/vmi-ffi.cdx.json
       - name: Normalize release SBOMs
         run: python scripts/normalize-sbom.py crates/vmi-cli/vmi-cli.cdx.json crates/vmi-ffi/vmi-ffi.cdx.json
       - name: Assemble release bundle
@@ -79,7 +84,7 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-path: "libvmi-rust-cli-*.tar.gz"
-          sbom-path: "crates/vmi-cli/vmi-cli.cdx.json"
+          sbom-path: "target/attestation-sbom/vmi-cli.cdx.json"
       - name: Attest FFI provenance
         uses: actions/attest@v4
         with:
@@ -88,7 +93,7 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-path: "libvmi-rust-ffi-*.tar.gz"
-          sbom-path: "crates/vmi-ffi/vmi-ffi.cdx.json"
+          sbom-path: "target/attestation-sbom/vmi-ffi.cdx.json"
       - name: Publish GitHub release
         if: github.event_name == 'push'
         env:
