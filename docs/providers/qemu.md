@@ -59,6 +59,9 @@ smoke soak. Release candidates use `VMI_QEMU_SOAK_SECONDS=3600` for the required
 one-hour run; RSS and file-descriptor growth limits are configurable through
 `VMI_QEMU_MAX_RSS_GROWTH_KIB` and `VMI_QEMU_MAX_FD_GROWTH`.
 
+The `QEMU release qualification` GitHub Actions workflow runs that one-hour
+profile on demand and retains its JSON evidence for 30 days.
+
 `bash scripts/build-qemu.sh` builds the reviewed upstream QEMU 11.0.2 source
 tarball with a pinned SHA-256 and a minimal x86_64 TCG configuration. CI caches
 the installation but validates its reported version before use.

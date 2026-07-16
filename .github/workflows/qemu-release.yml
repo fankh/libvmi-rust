@@ -1,0 +1,31 @@
+name: QEMU release qualification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  one-hour-soak:
+    name: QEMU 11 one-hour soak
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: actions/cache@v4
+        id: qemu-cache
+        with:
+          path: .tools/qemu-11.0.2
+          key: qemu-11.0.2-x86_64-tcg-v1
+      - run: sudo apt-get update && sudo apt-get install -y build-essential curl libfdt-dev libglib2.0-dev libpixman-1-dev ninja-build pkg-config python3 python3-pip python3-venv xz-utils
+      - if: steps.qemu-cache.outputs.cache-hit != 'true'
+        run: bash scripts/build-qemu.sh
+      - run: echo "$PWD/.tools/qemu-11.0.2/bin" >> "$GITHUB_PATH"
+      - run: bash scripts/test-qemu-integration.sh
+        env:
+          VMI_QEMU_SOAK_SECONDS: "3600"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qemu-11-release-qualification
+          path: target/qemu-qualification.json
+          if-no-files-found: error
+          retention-days: 30
