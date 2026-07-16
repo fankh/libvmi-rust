@@ -1,0 +1,154 @@
+schema_version = 2
+
+[[providers]]
+id = "fake-read-only"
+implemented = true
+display_name = "Fake Read-Only Provider"
+maturity = "supported"
+v1_target = "internal"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "testkit in-memory sparse map"
+
+[[providers]]
+id = "raw-dump"
+implemented = true
+display_name = "Raw Memory Dump"
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "immutable flat physical-memory artifact"
+
+[[providers]]
+id = "qemu-qmp"
+display_name = "QEMU QMP"
+implemented = true
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read", "register_read", "control", "acquisition", "events"]
+optional_capabilities = ["register_write (with GDB endpoint)"]
+mechanism = "QMP query-status/stop/cont/dump-guest-memory and asynchronous events + HMP xp/info registers/pmemsave"
+
+[[providers]]
+id = "snapshot-manifest"
+implemented = true
+display_name = "Manifest Snapshot Provider"
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "versioned multi-file manifest normalized to immutable physical ranges"
+
+[[providers]]
+id = "xen"
+implemented = true
+display_name = "Xen"
+maturity = "preview"
+v1_target = "preview"
+platforms = ["linux"]
+capabilities = ["control", "acquisition"]
+optional_capabilities = ["memory_read/memory_write (libxenctrl)", "register_read (xenctx or CPU transport)", "register_write (writable CPU transport)", "events (vm_event transport)"]
+mechanism = "dynamically loaded libxenctrl foreign-page mappings + xenctx vCPU contexts + xl control/acquisition"
+
+[[providers]]
+id = "virtualbox"
+implemented = true
+display_name = "VirtualBox"
+maturity = "experimental"
+v1_target = "preview"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read", "register_read", "control", "acquisition"]
+mechanism = "VBoxManage showvminfo/controlvm/debugvm registers plus snapshot-backed dumpvmcore memory reads"
+optional_capabilities = ["direct memory reads through a Main API/XPCOM memory transport", "register_write on vendor builds implementing IMachineDebugger::setRegister"]
+
+[[providers]]
+id = "virtualbox-core"
+implemented = true
+display_name = "VirtualBox VM Core"
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "dumpvmcore ELF PT_LOAD physical-memory normalization"
+
+[[providers]]
+id = "firecracker"
+implemented = true
+display_name = "Firecracker"
+maturity = "experimental"
+v1_target = "experimental"
+platforms = ["linux"]
+capabilities = ["memory_read"]
+mechanism = "versioned Firecracker memory snapshot manifest"
+
+[[providers]]
+id = "cloud-hypervisor"
+implemented = true
+display_name = "Cloud Hypervisor"
+maturity = "experimental"
+v1_target = "experimental"
+platforms = ["linux"]
+capabilities = ["memory_read"]
+mechanism = "versioned Cloud Hypervisor memory snapshot manifest"
+
+[[providers]]
+id = "hyperv"
+implemented = true
+display_name = "Hyper-V"
+maturity = "experimental"
+v1_target = "experimental"
+platforms = ["windows"]
+capabilities = ["memory_read"]
+mechanism = "versioned saved-state memory manifest"
+
+[[providers]]
+id = "hyperv-core"
+implemented = true
+display_name = "Hyper-V Converted Core"
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "user-supplied LiveKd/VM Saved State conversion auto-detected as ELF or Windows KDMP"
+
+[[providers]]
+id = "vmware"
+implemented = true
+display_name = "VMware"
+maturity = "experimental"
+v1_target = "experimental"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "flat .vmem physical-memory artifact"
+
+[[providers]]
+id = "vmware-core"
+implemented = true
+display_name = "VMware Converted Core"
+maturity = "preview"
+v1_target = "supported"
+platforms = ["linux", "windows", "macos"]
+capabilities = ["memory_read"]
+mechanism = "user-supplied vmss2core output auto-detected as ELF or Windows KDMP"
+
+[[providers]]
+id = "bhyve"
+implemented = true
+display_name = "bhyve"
+maturity = "compile-only"
+v1_target = "experimental"
+platforms = ["freebsd"]
+capabilities = ["memory_read"]
+mechanism = "versioned saved-state memory manifest"
+
+[[providers]]
+id = "bhyve-core"
+implemented = true
+display_name = "bhyve Converted Core"
+maturity = "preview"
+v1_target = "experimental"
+platforms = ["linux", "windows", "macos", "freebsd"]
+capabilities = ["memory_read"]
+mechanism = "user-supplied bhyve conversion auto-detected as ELF or Windows KDMP"

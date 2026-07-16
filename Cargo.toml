@@ -1,0 +1,46 @@
+[workspace]
+members = [
+    "crates/vmi",
+    "crates/vmi-artifact",
+    "crates/vmi-arch-amd64",
+    "crates/vmi-arch-aarch64",
+    "crates/vmi-arch-api",
+    "crates/vmi-core",
+    "crates/vmi-driver-dump",
+    "crates/vmi-driver-api",
+    "crates/vmi-driver-qemu",
+    "crates/vmi-driver-snapshot",
+    "crates/vmi-driver-virtualbox",
+    "crates/vmi-driver-xen",
+    "crates/vmi-events",
+    "crates/vmi-profile",
+    "crates/vmi-os-linux",
+    "crates/vmi-os-windows",
+    "crates/vmi-testkit",
+    "crates/vmi-types",
+    "crates/vmi-views",
+    "crates/vmi-cli",
+    "crates/vmi-ffi",
+]
+resolver = "2"
+exclude = ["fuzz"]
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.85"
+license = "MIT OR Apache-2.0"
+version = "0.1.0"
+description = "Native Rust virtual machine introspection framework components"
+repository = "https://github.com/fankh/new-research"
+readme = "README.md"
+keywords = ["vmi", "virtualization", "memory", "forensics"]
+categories = ["virtualization", "development-tools::debugging"]
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.dependencies]
+bitflags = "2"
+thiserror = "1"
+serde_json = "1"
+proptest = "1"

@@ -1,0 +1,24 @@
+[package]
+name = "vmi-os-windows"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Windows kernel object and process inspection adapters for VMI"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+vmi-arch-api = { version = "=0.1.0", path = "../vmi-arch-api" }
+vmi-core = { version = "=0.1.0", path = "../vmi-core" }
+vmi-profile = { version = "=0.1.0", path = "../vmi-profile" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+
+[dev-dependencies]
+vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
+vmi-testkit = { version = "=0.1.0", path = "../vmi-testkit" }

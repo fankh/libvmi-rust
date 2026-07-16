@@ -1,0 +1,17 @@
+[package]
+name = "vmi-driver-api"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Capability-based connector and session contracts for VMI providers"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }

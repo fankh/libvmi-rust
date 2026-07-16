@@ -1,0 +1,18 @@
+[package]
+name = "vmi-ffi"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Versioned C ABI for inspecting immutable virtual machine memory artifacts"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lib]
+crate-type = ["cdylib", "staticlib", "rlib"]
+
+[dependencies]
+vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }

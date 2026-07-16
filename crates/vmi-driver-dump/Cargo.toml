@@ -1,0 +1,19 @@
+[package]
+name = "vmi-driver-dump"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Read-only raw physical-memory dump provider for VMI"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
+vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }

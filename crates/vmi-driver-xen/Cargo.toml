@@ -1,0 +1,23 @@
+[package]
+name = "vmi-driver-xen"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Xen control, memory, register, event, and acquisition provider for VMI"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
+vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
+libloading = "0.8"
+
+[dev-dependencies]
+proptest.workspace = true

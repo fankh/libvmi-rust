@@ -1,0 +1,26 @@
+[package]
+name = "vmi-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Command-line inspection tools for virtual machine memory and live providers"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+vmi-artifact = { version = "=0.1.0", path = "../vmi-artifact" }
+vmi-arch-amd64 = { version = "=0.1.0", path = "../vmi-arch-amd64" }
+vmi-core = { version = "=0.1.0", path = "../vmi-core" }
+vmi-driver-dump = { version = "=0.1.0", path = "../vmi-driver-dump" }
+vmi-driver-qemu = { version = "=0.1.0", path = "../vmi-driver-qemu" }
+vmi-driver-virtualbox = { version = "=0.1.0", path = "../vmi-driver-virtualbox" }
+vmi-profile = { version = "=0.1.0", path = "../vmi-profile" }
+vmi-os-linux = { version = "=0.1.0", path = "../vmi-os-linux" }
+vmi-os-windows = { version = "=0.1.0", path = "../vmi-os-windows" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }

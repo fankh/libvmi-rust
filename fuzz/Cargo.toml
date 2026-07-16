@@ -1,0 +1,28 @@
+[package]
+name = "vmi-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2021"
+rust-version = "1.85"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+vmi-artifact = { path = "../crates/vmi-artifact" }
+vmi-profile = { path = "../crates/vmi-profile" }
+
+[[bin]]
+name = "artifact_parsers"
+path = "fuzz_targets/artifact_parsers.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "text_profiles"
+path = "fuzz_targets/text_profiles.rs"
+test = false
+doc = false
+bench = false

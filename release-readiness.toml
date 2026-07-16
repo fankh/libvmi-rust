@@ -1,0 +1,72 @@
+schema_version = 1
+release = "1.0.0"
+
+[[gates]]
+id = "support-contract"
+title = "v1 support contract and provider tiers"
+status = "complete"
+critical = true
+evidence = ["support-matrix.toml", "docs/production-readiness.md"]
+
+[[gates]]
+id = "core-api"
+title = "core API, lifecycle, timeout, cancellation, and error contracts"
+status = "complete"
+critical = true
+evidence = ["docs/public-api.txt", "docs/compatibility-policy.md"]
+
+[[gates]]
+id = "qemu-supported"
+title = "QEMU supported-tier qualification"
+status = "in-progress"
+critical = true
+evidence = ["crates/vmi-driver-qemu", "docs/providers/qemu.md"]
+
+[[gates]]
+id = "xen-preview"
+title = "Xen preview-tier qualification"
+status = "pending"
+critical = true
+evidence = ["crates/vmi-driver-xen", "docs/unsafe-code-inventory.md"]
+
+[[gates]]
+id = "virtualbox-preview"
+title = "VirtualBox preview-tier qualification"
+status = "pending"
+critical = true
+evidence = ["crates/vmi-driver-virtualbox", "docs/current-implementation.md"]
+
+[[gates]]
+id = "secondary-providers"
+title = "secondary provider completion or explicit deferral"
+status = "pending"
+critical = true
+evidence = ["support-matrix.toml"]
+
+[[gates]]
+id = "os-profiles"
+title = "guest OS and profile compatibility qualification"
+status = "pending"
+critical = true
+evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile"]
+
+[[gates]]
+id = "operations"
+title = "diagnostics, resource budgets, load, fault, and recovery qualification"
+status = "pending"
+critical = true
+evidence = ["docs/performance-baselines.md", "docs/development.md"]
+
+[[gates]]
+id = "security-supply-chain"
+title = "security, unsafe, dependency, fuzz, and reproducibility qualification"
+status = "pending"
+critical = true
+evidence = ["docs/unsafe-code-inventory.md", "docs/fixture-policy.md"]
+
+[[gates]]
+id = "release-engineering"
+title = "API freeze, packages, SBOM, signed artifacts, RC soak, and go/no-go"
+status = "pending"
+critical = true
+evidence = ["docs/migration.md", "docs/compatibility-policy.md"]

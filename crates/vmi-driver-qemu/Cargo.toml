@@ -1,0 +1,22 @@
+[package]
+name = "vmi-driver-qemu"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "QMP and GDB provider for QEMU virtual machine introspection"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+serde_json.workspace = true
+vmi-driver-api = { version = "=0.1.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=0.1.0", path = "../vmi-types" }
+
+[dev-dependencies]
+proptest.workspace = true

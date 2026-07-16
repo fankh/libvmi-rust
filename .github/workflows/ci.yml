@@ -1,0 +1,147 @@
+name: libvmi-rust-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  qemu-integration:
+    name: Real QEMU transport integration
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: sudo apt-get update && sudo apt-get install -y qemu-system-x86 python3
+      - run: bash scripts/test-qemu-integration.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qemu-qualification
+          path: target/qemu-qualification.json
+          if-no-files-found: error
+
+  coverage:
+    name: Workspace source coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: llvm-tools-preview
+      - run: cargo install cargo-llvm-cov --version 0.6.21 --locked
+      - run: bash scripts/test-coverage.sh
+
+  public-api:
+    name: Public facade snapshot
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo install cargo-public-api --version 0.52.0 --locked
+      - run: bash scripts/test-public-api.sh
+
+  address-sanitizer:
+    name: Linux AddressSanitizer
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: bash scripts/test-sanitizers.sh
+
+  miri:
+    name: Portable core under Miri
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: miri
+      - run: cargo miri test -p vmi-types -p vmi-driver-api -p vmi-core -p vmi-events -p vmi-views
+
+  fuzz-build:
+    name: Fuzz harness compilation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo install cargo-fuzz --locked
+      - run: python scripts/verify-fixtures.py
+      - run: bash scripts/test-fuzz-targets.sh
+
+  msrv:
+    name: Rust 1.85 compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.85.0
+      - run: cargo check --workspace --all-targets --all-features
+
+  rust:
+    name: Workspace checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+      - run: cargo fmt --all --check
+      - run: cargo check --workspace --all-targets --no-default-features
+      - run: python scripts/verify-support-matrix.py
+      - run: python -m unittest scripts/test_support_matrix.py
+      - run: python scripts/verify-release-readiness.py
+      - run: python -m unittest scripts/test_release_readiness.py
+      - run: python scripts/generate-support-matrix.py --check
+      - run: python -m unittest scripts/test_generate_support_matrix.py
+      - run: python scripts/verify-unsafe-policy.py
+      - run: python -m unittest scripts/test_unsafe_policy.py
+      - run: python scripts/verify-fixtures.py
+      - run: python -m unittest scripts/test_fixtures.py
+      - run: python scripts/verify-package-metadata.py
+      - run: python -m unittest scripts/test_package_metadata.py
+      - run: python scripts/verify-markdown.py
+      - run: python -m unittest scripts/test_markdown.py
+      - run: python scripts/verify-panic-policy.py
+      - run: python -m unittest scripts/test_panic_policy.py
+      - run: python -m unittest scripts/test_differential_artifacts.py
+      - run: cargo test --workspace --all-targets
+      - run: cargo test --workspace --all-targets --release
+      - run: cargo test --workspace --doc
+      - run: cargo run -p vmi --example custom_provider
+      - run: cargo bench -p vmi --bench core --no-run
+      - run: python -m unittest scripts/test_compare_benchmark.py
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings -D unsafe-op-in-unsafe-fn -D clippy::undocumented-unsafe-blocks
+      - run: cargo clippy --workspace --lib --bins --examples --all-features -- -D warnings -D clippy::as_conversions -D clippy::cast_possible_truncation -D clippy::cast_sign_loss -D clippy::cast_possible_wrap -D clippy::cast_lossless -D clippy::string_slice
+      - run: cargo clippy --workspace --lib -- -D warnings -D clippy::indexing_slicing
+      - run: cargo clippy --workspace --lib --bins --examples --all-features -- -D warnings -D clippy::arithmetic_side_effects
+      - run: cargo build --workspace --all-targets --all-features --release
+      - run: cargo doc --workspace --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
+      - run: bash scripts/test-c-abi.sh
+      - run: bash scripts/test-cli.sh
+      - run: cargo install cargo-audit --locked
+      - run: cargo audit
+      - run: cargo install cargo-deny --locked
+      - run: cargo deny check
+      - run: cargo package --workspace
+
+  portable-hosts:
+    name: Portable tests (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo test --workspace --all-targets
+
+  windows-32-bit:
+    name: Windows 32-bit compile check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: i686-pc-windows-msvc
+      - run: cargo check --workspace --all-targets --all-features --target i686-pc-windows-msvc

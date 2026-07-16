@@ -1,0 +1,27 @@
+name: libvmi-rust-fuzz
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 3 * * *"
+
+jobs:
+  fuzz:
+    name: Timed parser fuzzing
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo install cargo-fuzz --locked
+      - run: bash scripts/test-fuzz-targets.sh
+        env:
+          VMI_RUN_FUZZ: "1"
+          VMI_FUZZ_SECONDS: "60"
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: fuzz-crash-artifacts
+          path: fuzz/artifacts
+          if-no-files-found: ignore
+          retention-days: 14

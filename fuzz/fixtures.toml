@@ -1,0 +1,53 @@
+schema_version = 1
+
+[[fixtures]]
+path = "corpus/artifact_parsers/kdmp-signature"
+sha256 = "5be0e0a9613b12490d895d54901cf0e28dc8d38d94421010b38f78c219fa3fea"
+size = 9
+license = "MIT OR Apache-2.0"
+provenance = "project-generated minimal KDMP signature seed"
+generator = "manual-v1"
+architecture = "amd64"
+endianness = "little"
+page_size = 4096
+physical_ranges = "none; deliberately truncated signature"
+expected = "parser rejects truncation without panic or unbounded allocation"
+
+[[fixtures]]
+path = "corpus/artifact_parsers/lime-signature"
+sha256 = "2f4992f22021d71ab8481025f0d89edac2ccd7ecadbdae7ed601b532bedcf5ea"
+size = 5
+license = "MIT OR Apache-2.0"
+provenance = "project-generated minimal LiME signature seed"
+generator = "manual-v1"
+architecture = "unknown"
+endianness = "little"
+page_size = 0
+physical_ranges = "none; deliberately truncated signature"
+expected = "parser rejects truncation without panic or unbounded allocation"
+
+[[fixtures]]
+path = "corpus/text_profiles/profile-json"
+sha256 = "d9c4e14ec097cf1a228898bf44db9dfd428b7eb231594f9165261e2c0cc361a2"
+size = 68
+license = "MIT OR Apache-2.0"
+provenance = "project-generated normalized profile seed"
+generator = "manual-v1"
+architecture = "amd64"
+endianness = "little"
+page_size = 4096
+physical_ranges = "not applicable"
+expected = "profile parser accepts symbols and offsets or rejects mutations safely"
+
+[[fixtures]]
+path = "corpus/text_profiles/system-map"
+sha256 = "ce0080abf28ccb984165095c1392ef377051861406a12fd95e9275d1304a63c0"
+size = 54
+license = "MIT OR Apache-2.0"
+provenance = "project-generated Linux System.map seed"
+generator = "manual-v1"
+architecture = "amd64"
+endianness = "little"
+page_size = 4096
+physical_ranges = "not applicable"
+expected = "symbol parser accepts two ordered symbols or rejects mutations safely"
