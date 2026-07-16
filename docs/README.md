@@ -13,6 +13,7 @@ functionality.
 | [QEMU provider qualification](providers/qemu.md) | Supported-tier contract, evidence, and remaining real-host gates |
 | [Xen provider qualification](providers/xen.md) | Preview-tier capability activation, evidence, and native-host limits |
 | [VirtualBox provider qualification](providers/virtualbox.md) | Preview-tier transport evidence and vendor limitations |
+| [VMware artifact qualification](providers/vmware.md) | Offline `.vmem`/converted-core scope, qualifier, and limitations |
 | [Artifact and secondary providers](providers/artifacts-and-secondary.md) | Supported artifact evidence and explicit v1 deferrals |
 | [Guest OS and profile qualification](os-profile-qualification.md) | Guest compatibility contract and required real-artifact matrix |
 | [Development guide](development.md) | Build, test, lint, and documentation commands |

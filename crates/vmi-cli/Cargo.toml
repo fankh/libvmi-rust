@@ -19,6 +19,7 @@ vmi-arch-amd64 = { version = "=1.0.0", path = "../vmi-arch-amd64" }
 vmi-core = { version = "=1.0.0", path = "../vmi-core" }
 vmi-driver-dump = { version = "=1.0.0", path = "../vmi-driver-dump" }
 vmi-driver-qemu = { version = "=1.0.0", path = "../vmi-driver-qemu" }
+vmi-driver-snapshot = { version = "=1.0.0", path = "../vmi-driver-snapshot" }
 vmi-driver-virtualbox = { version = "=1.0.0", path = "../vmi-driver-virtualbox" }
 vmi-profile = { version = "=1.0.0", path = "../vmi-profile" }
 vmi-os-linux = { version = "=1.0.0", path = "../vmi-os-linux" }

@@ -121,7 +121,7 @@ maturity = "experimental"
 v1_target = "experimental"
 platforms = ["linux", "windows", "macos"]
 capabilities = ["memory_read"]
-mechanism = "flat .vmem physical-memory artifact"
+mechanism = "contiguous flat .vmem physical-memory artifact with an operator-supplied GPA base"
 
 [[providers]]
 id = "vmware-core"

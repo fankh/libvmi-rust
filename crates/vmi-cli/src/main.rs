@@ -5,6 +5,7 @@ use vmi_artifact::SnapshotBundle;
 use vmi_core::VmiSession;
 use vmi_driver_dump::DumpConnector;
 use vmi_driver_qemu::QemuConnector;
+use vmi_driver_snapshot::SnapshotConnector;
 use vmi_driver_virtualbox::{ProcessTransport, VirtualBoxConnector};
 use vmi_os_linux::{LinuxIntrospector, LinuxTaskOffsets};
 use vmi_os_windows::{WindowsIntrospector, WindowsProcessOffsets};
@@ -62,6 +63,8 @@ fn run_args(args: &[String]) -> Result<(), String> {
         Some("read-kdmp") if args.len() == 5 => read_kdmp(args),
         Some("read-lime") if args.len() == 5 => read_lime(args),
         Some("read-manifest") if args.len() == 5 => read_manifest(args),
+        Some("read-vmware-vmem") if args.len() == 6 => read_vmware_vmem(args),
+        Some("read-vmware-core") if args.len() == 5 => read_vmware_core(args),
         Some("qemu-status") if args.len() == 3 => qemu_control(&args[2], "status"),
         Some("qemu-pause") if args.len() == 3 => qemu_control(&args[2], "pause"),
         Some("qemu-resume") if args.len() == 3 => qemu_control(&args[2], "resume"),
@@ -87,7 +90,7 @@ fn run_args(args: &[String]) -> Result<(), String> {
         _ => {
             let program = args.first().map(String::as_str).unwrap_or("vmi-cli");
             Err(format!(
-                "usage:\n  {program} read-raw|read-elf|read-xen-core|read-kdmp|read-lime|read-manifest <file> <gpa> <length>\n  {program} qemu-status|qemu-pause|qemu-resume <host:port>\n  {program} qemu-read <host:port> <gpa> <length>\n  {program} qemu-reg-read <host:port> <vcpu> <register>\n  {program} qemu-event <host:port> <timeout-ms> [event-kind]\n  {program} qemu-gdb-reg-write <qmp-host:port> <gdb-host:port> [vcpu] <register> <value>\n  {program} qemu-acquire <host:port> <output> <gpa> <length>\n  {program} qemu-dump <host:port> <output.elf>\n  {program} vbox-status <vm>\n  {program} vbox-reg-read <vm> <vcpu> <register>\n  {program} vbox-reg-write <vm> <vcpu> <register> <value>\n  {program} profile-symbol|profile-nearest <System.map> <name-or-address>\n  {program} profile-json-symbol|profile-json-offset <profile.json> <name>\n  {program} profile-pdb-symbol|profile-pdb-offset <file.pdb> <image-base> <name>\n  {program} linux-processes-elf <vmcore> <System.map> <cr3> <tasks_off> <pid_off> <comm_off> <comm_len> <limit>\n  {program} windows-processes-elf <vmcore> <symbols> <cr3> <links_off> <pid_off> <image_off> <image_len> <dtb_off> <limit>"
+                "usage:\n  {program} read-raw|read-elf|read-xen-core|read-kdmp|read-lime|read-manifest <file> <gpa> <length>\n  {program} read-vmware-vmem <file.vmem> <physical-base> <gpa> <length>\n  {program} read-vmware-core <vmss2core-output> <gpa> <length>\n  {program} qemu-status|qemu-pause|qemu-resume <host:port>\n  {program} qemu-read <host:port> <gpa> <length>\n  {program} qemu-reg-read <host:port> <vcpu> <register>\n  {program} qemu-event <host:port> <timeout-ms> [event-kind]\n  {program} qemu-gdb-reg-write <qmp-host:port> <gdb-host:port> [vcpu] <register> <value>\n  {program} qemu-acquire <host:port> <output> <gpa> <length>\n  {program} qemu-dump <host:port> <output.elf>\n  {program} vbox-status <vm>\n  {program} vbox-reg-read <vm> <vcpu> <register>\n  {program} vbox-reg-write <vm> <vcpu> <register> <value>\n  {program} profile-symbol|profile-nearest <System.map> <name-or-address>\n  {program} profile-json-symbol|profile-json-offset <profile.json> <name>\n  {program} profile-pdb-symbol|profile-pdb-offset <file.pdb> <image-base> <name>\n  {program} linux-processes-elf <vmcore> <System.map> <cr3> <tasks_off> <pid_off> <comm_off> <comm_len> <limit>\n  {program} windows-processes-elf <vmcore> <symbols> <cr3> <links_off> <pid_off> <image_off> <image_len> <dtb_off> <limit>"
             ))
         }
     }
@@ -162,6 +165,46 @@ fn read_raw(args: &[String]) -> Result<(), String> {
         .map_err(|e| e.to_string())?;
     print_bytes(address, &bytes)?;
     Ok(())
+}
+
+fn read_vmware_vmem(args: &[String]) -> Result<(), String> {
+    let physical_base = parse_number(&args[3])?;
+    let address = parse_number(&args[4])?;
+    let length = usize::try_from(parse_number(&args[5])?)
+        .map_err(|_| "length does not fit this platform".to_string())?;
+    let connector = SnapshotConnector::open_vmware_vmem(
+        GuestArchitecture::Amd64,
+        &args[2],
+        Gpa::new(physical_base),
+    )
+    .map_err(|error| error.to_string())?;
+    read_snapshot_connector(&connector, address, length)
+}
+
+fn read_vmware_core(args: &[String]) -> Result<(), String> {
+    let address = parse_number(&args[3])?;
+    let length = usize::try_from(parse_number(&args[4])?)
+        .map_err(|_| "length does not fit this platform".to_string())?;
+    let connector =
+        SnapshotConnector::open_vmware_converted_core(GuestArchitecture::Amd64, &args[2])
+            .map_err(|error| error.to_string())?;
+    read_snapshot_connector(&connector, address, length)
+}
+
+fn read_snapshot_connector(
+    connector: &SnapshotConnector,
+    address: u64,
+    length: usize,
+) -> Result<(), String> {
+    let session = VmiSession::attach(
+        connector,
+        AttachRequest::any(CapabilitySet::from_caps([Capability::MemoryRead])),
+    )
+    .map_err(|error| error.to_string())?;
+    let bytes = session
+        .read_bytes(Gpa::new(address), length)
+        .map_err(|error| error.to_string())?;
+    print_bytes(address, &bytes)
 }
 
 fn read_elf(args: &[String]) -> Result<(), String> {
@@ -611,6 +654,8 @@ mod tests {
         let error = run_args(&[]).unwrap_err();
         for command in [
             "read-kdmp",
+            "read-vmware-vmem",
+            "read-vmware-core",
             "qemu-event",
             "qemu-gdb-reg-write",
             "vbox-status",

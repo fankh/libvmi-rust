@@ -19,7 +19,7 @@ documented by each provider.
 | Cloud Hypervisor | `cloud-hypervisor` | Yes | experimental | experimental | linux | memory_read | None | versioned Cloud Hypervisor memory snapshot manifest |
 | Hyper-V | `hyperv` | Yes | experimental | experimental | windows | memory_read | None | versioned saved-state memory manifest |
 | Hyper-V Converted Core | `hyperv-core` | Yes | supported | supported | linux, windows, macos | memory_read | None | user-supplied LiveKd/VM Saved State conversion auto-detected as ELF or Windows KDMP |
-| VMware | `vmware` | Yes | experimental | experimental | linux, windows, macos | memory_read | None | flat .vmem physical-memory artifact |
+| VMware | `vmware` | Yes | experimental | experimental | linux, windows, macos | memory_read | None | contiguous flat .vmem physical-memory artifact with an operator-supplied GPA base |
 | VMware Converted Core | `vmware-core` | Yes | supported | supported | linux, windows, macos | memory_read | None | user-supplied vmss2core output auto-detected as ELF or Windows KDMP |
 | bhyve | `bhyve` | Yes | compile-only | experimental | freebsd | memory_read | None | versioned saved-state memory manifest |
 | bhyve Converted Core | `bhyve-core` | Yes | preview | experimental | linux, windows, macos, freebsd | memory_read | None | user-supplied bhyve conversion auto-detected as ELF or Windows KDMP |

@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "provider_scope": "offline-vmware-artifacts",
+  "host": "Windows-11-10.0.26200-SP0",
+  "artifacts": [
+    {
+      "kind": "vmem",
+      "source": "synthetic",
+      "file_name": "qualified-synthetic.vmem",
+      "size_bytes": 4194304,
+      "sha256": "a117210941a0b00dcb2d8577e680d84b6fa0eaf760d2afc654c953b9859d54fa",
+      "physical_base": 0,
+      "probe_address": 0,
+      "probe_length": 4096,
+      "probe_sha256": "542a83352a2cb255bafa5ceb08bdfbf29f7a4d98239230818d07b63710efe955",
+      "iterations": 25,
+      "latency": {
+        "mean_ms": 7.679,
+        "median_ms": 7.614,
+        "p95_ms": 8.471,
+        "minimum_ms": 7.039,
+        "maximum_ms": 8.52
+      },
+      "checks": {
+        "artifact is non-empty": true,
+        "repeated reads are byte-identical": true,
+        "requested byte count returned": true,
+        "out-of-range read fails closed": true
+      },
+      "passed": true
+    },
+    {
+      "kind": "converted-core",
+      "source": "synthetic",
+      "file_name": "qualified-synthetic.core",
+      "size_bytes": 4194424,
+      "sha256": "2977ba4e4373b449b7e7eee8ce36776f97ec2abe57e53013ef5edcd7e8cd91c3",
+      "physical_base": null,
+      "probe_address": 4096,
+      "probe_length": 4096,
+      "probe_sha256": "e6f644a9d979a250d52b21d29667ac628bca30a5a4818c1e8b874eae52544658",
+      "iterations": 25,
+      "latency": {
+        "mean_ms": 16.465,
+        "median_ms": 16.269,
+        "p95_ms": 17.345,
+        "minimum_ms": 14.971,
+        "maximum_ms": 24.709
+      },
+      "checks": {
+        "artifact is non-empty": true,
+        "repeated reads are byte-identical": true,
+        "requested byte count returned": true
+      },
+      "passed": true
+    }
+  ],
+  "passed": true
+}

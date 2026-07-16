@@ -16,6 +16,13 @@ if [ "$output" != "$expected" ]; then
     exit 1
 fi
 
+vmware_output=$(cargo run --quiet -p vmi-cli -- \
+    read-vmware-vmem "$temporary/memory.raw" 0x2000 0x2000 4)
+if [ "$vmware_output" != '0000000000002000: 56 4d 49 21' ]; then
+    printf 'unexpected VMware VMEM output:\n%s\n' "$vmware_output" >&2
+    exit 1
+fi
+
 example_output=$(cargo run --quiet -p vmi --example inspect_raw -- \
     "$temporary/memory.raw" 0X0 4)
 if [ "$example_output" != '564d4921' ]; then
@@ -38,5 +45,6 @@ if cargo run --quiet -p vmi-cli -- unknown-command \
 fi
 grep -F 'qemu-event' "$temporary/usage.err" >/dev/null
 grep -F 'vbox-reg-write' "$temporary/usage.err" >/dev/null
+grep -F 'read-vmware-core' "$temporary/usage.err" >/dev/null
 
 echo 'CLI and facade example smoke tests passed'

@@ -636,6 +636,7 @@ dependencies = [
  "vmi-core",
  "vmi-driver-dump",
  "vmi-driver-qemu",
+ "vmi-driver-snapshot",
  "vmi-driver-virtualbox",
  "vmi-os-linux",
  "vmi-os-windows",

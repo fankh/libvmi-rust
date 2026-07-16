@@ -31,7 +31,7 @@ supported in v1:
 | Firecracker | Versioned memory snapshot manifest only; no REST lifecycle orchestration |
 | Cloud Hypervisor | Versioned memory snapshot manifest only; no REST lifecycle orchestration |
 | Hyper-V | Versioned saved-state manifest only; no native proprietary container decoder |
-| VMware | Flat `.vmem` or user-converted core only; no automated snapshot orchestration |
+| VMware | Contiguous flat `.vmem` or user-converted core only; sparse ESXi memory layouts require conversion and there is no automated snapshot orchestration |
 | bhyve | Compile-only saved-state manifest; converted cores remain Experimental |
 
 KVMi and the custom kernel module remain outside v1. No Experimental provider may
