@@ -46,9 +46,9 @@ evidence = ["support-matrix.toml", "docs/providers/artifacts-and-secondary.md"]
 [[gates]]
 id = "os-profiles"
 title = "guest OS and profile compatibility qualification"
-status = "pending"
+status = "in-progress"
 critical = true
-evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile"]
+evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile", "docs/os-profile-qualification.md"]
 
 [[gates]]
 id = "operations"
