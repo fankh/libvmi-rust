@@ -16,7 +16,7 @@ cargo test --workspace --all-targets
 cargo test --workspace --all-targets --release
 cargo test --workspace --doc
 cargo run -p vmi --example custom_provider
-cargo +nightly miri test -p vmi-types -p vmi-driver-api -p vmi-core -p vmi-events -p vmi-views
+MIRIFLAGS=-Zmiri-disable-isolation cargo +nightly miri test -p vmi-types -p vmi-driver-api -p vmi-core -p vmi-events -p vmi-views
 bash scripts/test-fuzz-targets.sh
 VMI_RUN_FUZZ=1 VMI_FUZZ_SECONDS=30 bash scripts/test-fuzz-targets.sh
 bash scripts/test-sanitizers.sh

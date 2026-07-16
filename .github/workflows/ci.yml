@@ -56,6 +56,8 @@ jobs:
         with:
           components: miri
       - run: cargo miri test -p vmi-types -p vmi-driver-api -p vmi-core -p vmi-events -p vmi-views
+        env:
+          MIRIFLAGS: -Zmiri-disable-isolation
 
   fuzz-build:
     name: Fuzz harness compilation

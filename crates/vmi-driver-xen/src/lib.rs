@@ -910,11 +910,16 @@ mod xenctrl {
                 .map_err(|_| VmiError::Backend("xenctrl interface lock is poisoned".into()))?;
             let mut completed = 0usize;
             while completed < buffer.len() {
+                let completed_address = u64::try_from(completed).map_err(|_| {
+                    VmiError::Backend("Xen transfer offset exceeds physical addressing".into())
+                })?;
                 let current = address
                     .raw()
-                    .checked_add(completed as u64)
+                    .checked_add(completed_address)
                     .ok_or_else(|| VmiError::Backend("Xen physical address overflow".into()))?;
-                let page_offset = current as usize & 0xfff;
+                let page_offset = usize::try_from(current & 0xfff).map_err(|_| {
+                    VmiError::Backend("Xen page offset exceeds host pointer width".into())
+                })?;
                 let length = (4096 - page_offset).min(buffer.len() - completed);
                 let frame = libc::c_ulong::try_from(current >> 12).map_err(|_| {
                     VmiError::Backend("Xen guest frame number exceeds host c_ulong".into())
