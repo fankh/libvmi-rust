@@ -19,7 +19,13 @@ Sigstore-backed artifact attestations. Verify a downloaded archive before use:
 sha256sum --check SHA256SUMS
 gh attestation verify libvmi-rust-cli-vVERSION-x86_64-unknown-linux-gnu.tar.gz --repo fankh/libvmi-rust
 gh attestation verify libvmi-rust-ffi-vVERSION-x86_64-unknown-linux-gnu.tar.gz --repo fankh/libvmi-rust
+gh attestation verify libvmi-rust-cli-vVERSION-x86_64-unknown-linux-gnu.tar.gz --repo fankh/libvmi-rust --predicate-type https://cyclonedx.org/bom
+gh attestation verify libvmi-rust-ffi-vVERSION-x86_64-unknown-linux-gnu.tar.gz --repo fankh/libvmi-rust --predicate-type https://cyclonedx.org/bom
 ```
+
+Production verification should additionally pass
+`--signer-workflow fankh/libvmi-rust/.github/workflows/release.yml` to every
+attestation command.
 
 An attestation proves source and workflow provenance; it does not by itself prove
 that an artifact is defect-free. Consumers must also enforce the expected tag,

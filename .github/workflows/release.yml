@@ -58,12 +58,20 @@ jobs:
           tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-cli-${release_label}-x86_64-unknown-linux-gnu.tar.gz" -C dist/cli .
           tar --sort=name --mtime="UTC 1970-01-01" --owner=0 --group=0 --numeric-owner -czf "libvmi-rust-ffi-${release_label}-x86_64-unknown-linux-gnu.tar.gz" -C dist/ffi .
           sha256sum libvmi-rust-*.tar.gz > SHA256SUMS
-      - name: Attest CLI provenance and SBOM
+      - name: Attest CLI provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: "libvmi-rust-cli-*.tar.gz"
+      - name: Attest CLI SBOM
         uses: actions/attest@v4
         with:
           subject-path: "libvmi-rust-cli-*.tar.gz"
           sbom-path: "crates/vmi-cli/vmi-cli.cdx.json"
-      - name: Attest FFI provenance and SBOM
+      - name: Attest FFI provenance
+        uses: actions/attest@v4
+        with:
+          subject-path: "libvmi-rust-ffi-*.tar.gz"
+      - name: Attest FFI SBOM
         uses: actions/attest@v4
         with:
           subject-path: "libvmi-rust-ffi-*.tar.gz"
