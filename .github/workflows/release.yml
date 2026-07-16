@@ -44,6 +44,8 @@ jobs:
       - run: cargo build --release -p vmi-cli -p vmi-ffi
       - run: cargo install cargo-cyclonedx --version 0.5.9 --locked
       - run: cargo cyclonedx --format json --all-features
+      - name: Normalize release SBOMs
+        run: python scripts/normalize-sbom.py crates/vmi-cli/vmi-cli.cdx.json crates/vmi-ffi/vmi-ffi.cdx.json
       - name: Assemble release bundle
         shell: bash
         run: |

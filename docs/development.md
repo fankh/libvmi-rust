@@ -51,6 +51,7 @@ python -m unittest scripts/test_markdown.py
 python scripts/verify-panic-policy.py
 python -m unittest scripts/test_panic_policy.py
 python -m unittest scripts/test_differential_artifacts.py
+python -m unittest scripts/test_normalize_sbom.py
 cargo clippy --workspace --all-targets --all-features -- -D warnings -D unsafe-op-in-unsafe-fn -D clippy::undocumented-unsafe-blocks
 cargo clippy --workspace --lib --bins --examples --all-features -- -D warnings -D clippy::as_conversions -D clippy::cast_possible_truncation -D clippy::cast_sign_loss -D clippy::cast_possible_wrap -D clippy::cast_lossless -D clippy::string_slice
 cargo clippy --workspace --lib -- -D warnings -D clippy::indexing_slicing

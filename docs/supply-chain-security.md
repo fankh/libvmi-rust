@@ -9,8 +9,10 @@ explicit reviewed inventory.
 
 Tag releases generate CycloneDX JSON SBOMs with pinned `cargo-cyclonedx` 0.5.9.
 The CLI and C ABI are packaged separately so each archive is paired with the BOM
-for the actual product it contains. Archives use sorted paths, a fixed timestamp,
-numeric ownership, and SHA-256 checksums.
+for the actual product it contains. A tested normalizer removes the generated
+timestamp and random serial UUID, canonicalizes the checkout URI, and sorts JSON
+keys. Archives use sorted paths, a fixed timestamp, numeric ownership, and SHA-256
+checksums.
 
 GitHub Actions signs the archive subject digests and their SBOM claims through
 Sigstore-backed artifact attestations. Verify a downloaded archive before use:
