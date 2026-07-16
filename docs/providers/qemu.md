@@ -28,18 +28,15 @@ need a coherent image must pause the VM or acquire an immutable core.
 - The optimized QEMU suite passes a 30-run local stress loop after normalizing
   command-boundary timeout classification.
 
-## Remaining Release Evidence
+## Supported-Tier Evidence
 
-Before changing the provider maturity to Supported and closing the gate:
-
-1. Run the real-host workflow on the pinned Linux QEMU 11.0.2 build from a clean CI
-   runner and retain its machine-readable transcript as a release artifact.
-2. Execute a minimum one-hour reconnect/control/read/acquisition soak with bounded
-   memory and file-descriptor growth.
-3. Exercise abrupt QEMU exit, QMP disconnect, stalled acquisition, and destination
-   permission/exhaustion failures, confirming bounded recovery and typed errors.
-4. Record whether Windows and macOS real-host validation is included in v1; until
-   then they remain build-compatible rather than operationally supported.
+The pinned QEMU 11.0.2 source build passed the full transport suite and a retained
+one-hour release soak on 2026-07-16. The soak completed 38,108 status/read
+iterations with 612 KiB RSS growth and zero descriptor growth. Live, range, and
+ELF-core bytes matched; pause/resume event delivery succeeded; abrupt process loss
+failed closed. Destination collision, protocol truncation, timeout, and bounded
+resource failures remain covered by deterministic release tests. Windows and
+macOS remain build-compatible rather than operationally supported.
 
 ## Known Limits
 

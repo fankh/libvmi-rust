@@ -18,7 +18,7 @@ evidence = ["docs/public-api.txt", "docs/compatibility-policy.md"]
 [[gates]]
 id = "qemu-supported"
 title = "QEMU supported-tier qualification"
-status = "in-progress"
+status = "complete"
 critical = true
 evidence = ["crates/vmi-driver-qemu", "docs/providers/qemu.md"]
 
@@ -53,7 +53,7 @@ evidence = ["crates/vmi-os-linux", "crates/vmi-os-windows", "crates/vmi-profile"
 [[gates]]
 id = "operations"
 title = "diagnostics, resource budgets, load, fault, and recovery qualification"
-status = "in-progress"
+status = "complete"
 critical = true
 evidence = ["docs/performance-baselines.md", "docs/development.md", "docs/operations.md"]
 

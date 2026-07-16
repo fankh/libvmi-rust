@@ -25,8 +25,8 @@ class NormalizeSbomTests(unittest.TestCase):
             "components": [{"bom-ref": f"path+{root_uri}/crates/vmi"}],
         }
         output = normalizer.normalize(document, root_uri)
-        self.assertNotIn("serialNumber", output)
-        self.assertNotIn("timestamp", output["metadata"])
+        self.assertTrue(output["serialNumber"].startswith("urn:uuid:"))
+        self.assertEqual(output["metadata"]["timestamp"], "1970-01-01T00:00:00Z")
         self.assertEqual(
             output["components"][0]["bom-ref"], "path+file:///workspace/crates/vmi"
         )

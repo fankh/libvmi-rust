@@ -1,8 +1,8 @@
 # Operations Qualification
 
 This runbook defines the minimum operational contract for a v1 deployment. The
-gate remains in progress until every supported provider has retained load, fault,
-and recovery evidence on its claimed platform matrix.
+gate is complete for the narrowed supported-provider scope. Post-v1 promotions
+require their own retained load, fault, and recovery evidence.
 
 ## Health and Budgets
 

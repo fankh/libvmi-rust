@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import sys
+import uuid
 from pathlib import Path
 
 
@@ -17,11 +18,15 @@ def normalize(document: object, root_uri: str) -> object:
         output = {
             key: normalize(value, root_uri)
             for key, value in document.items()
-            if key != "serialNumber"
         }
         metadata = output.get("metadata")
         if isinstance(metadata, dict):
-            metadata.pop("timestamp", None)
+            component = metadata.get("component")
+            if "serialNumber" in output and isinstance(component, dict):
+                identity = f"{component.get('name', '')}@{component.get('version', '')}"
+                output["serialNumber"] = f"urn:uuid:{uuid.uuid5(uuid.NAMESPACE_URL, identity)}"
+            if "timestamp" in metadata:
+                metadata["timestamp"] = "1970-01-01T00:00:00Z"
         return output
     if isinstance(document, list):
         return [normalize(value, root_uri) for value in document]
