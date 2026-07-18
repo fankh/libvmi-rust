@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "date": "2026-07-18",
+  "commit": "951d9a5",
+  "provider": "libvirt-qemu",
+  "status": "passed",
+  "capability": "linux_process_enumeration",
+  "guest": {
+    "distribution": "Ubuntu Minimal 24.04 LTS",
+    "architecture": "x86_64",
+    "kernel": "6.8.0-136-generic",
+    "memory_bytes": 1073741824,
+    "vcpus": 2,
+    "acceleration": "tcg",
+    "cloud_image_sha256": "484a0b828d2bf0d7a3f778d1f27cce2f8a1e6e2bf3d3c5a6adae57cd47fdc6e3"
+  },
+  "profile": {
+    "cr3": "0x074a0000",
+    "init_task": "0xffffffff8360fb40",
+    "tasks_offset": "0x8e8",
+    "pid_offset": "0x9b8",
+    "comm_offset": "0xbd8",
+    "comm_length": 16,
+    "kaslr": false,
+    "offset_source": "matching kernel BTF"
+  },
+  "acquisition": {
+    "format": "ELF64",
+    "bytes": 1073743939,
+    "consistency": "paused"
+  },
+  "result": {
+    "process_count": 114,
+    "traversal_limit": 4096,
+    "representative_processes": [
+      { "pid": 1, "command": "systemd" },
+      { "pid": 129, "command": "systemd-journal" },
+      { "pid": 195, "command": "systemd-network" },
+      { "pid": 240, "command": "systemd-resolve" },
+      { "pid": 362, "command": "dbus-daemon" },
+      { "pid": 382, "command": "snapd" },
+      { "pid": 383, "command": "systemd-logind" },
+      { "pid": 421, "command": "unattended-upgr" }
+    ]
+  },
+  "negative_tests": {
+    "stale_kaslr_symbol_failed_closed": true,
+    "duplicate_system_map_symbol_rejected": true,
+    "partial_inventory_presented_as_success": false
+  },
+  "custom_marker_processes_present": false,
+  "cleanup": {
+    "domain_destroyed": true,
+    "domain_undefined": true,
+    "temporary_artifacts_removed": true,
+    "final_domain_count": 0
+  }
+}
