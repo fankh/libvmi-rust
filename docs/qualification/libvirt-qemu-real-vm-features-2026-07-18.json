@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "provider": "libvirt-qemu",
+  "commit": "7dbba6f",
+  "date": "2026-07-18",
+  "status": "passed",
+  "environment": {
+    "host": "scuxvsa-524",
+    "kernel": "6.8.0-90-generic",
+    "architecture": "x86_64",
+    "libvirt": "10.0.0",
+    "qemu": "8.2.2",
+    "acceleration": "tcg",
+    "connection_uri": "qemu:///system",
+    "guest_memory_bytes": 134217728
+  },
+  "features": {
+    "attach_qemu_domain": "passed",
+    "status_running": "passed",
+    "pause_and_confirm_paused": "passed",
+    "resume_and_confirm_running": "passed",
+    "memory_only_elf_dump": "passed",
+    "elf_gpa_read": "passed",
+    "physical_range_acquisition": "passed",
+    "existing_output_rejected": "passed"
+  },
+  "artifacts": {
+    "elf_core_bytes": 134480867,
+    "range_bytes": 4096,
+    "gpa_zero_first_16_hex": "53ff00f053ff00f0c3e200f053ff00f0"
+  },
+  "cleanup": {
+    "domain_destroyed": true,
+    "domain_undefined": true,
+    "temporary_files_removed": true,
+    "final_domain_count": 0
+  }
+}
