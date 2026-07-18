@@ -9,6 +9,7 @@ members = [
     "crates/vmi-driver-dump",
     "crates/vmi-driver-api",
     "crates/vmi-driver-qemu",
+    "crates/vmi-driver-libvirt",
     "crates/vmi-driver-snapshot",
     "crates/vmi-driver-virtualbox",
     "crates/vmi-driver-xen",

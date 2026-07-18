@@ -25,8 +25,8 @@ bash scripts/test-coverage.sh
 bash scripts/run-benchmarks.sh
 ```
 
-The workspace includes the `vmi-cli` binary for artifact, profile, OS, QEMU,
-VirtualBox, and Xen inspection workflows. See
+The workspace includes the `vmi-cli` binary for artifact, profile, OS, direct
+QEMU, libvirt-managed QEMU/KVM, VirtualBox, and Xen inspection workflows. See
 [current implementation](current-implementation.md) for its command matrix.
 
 ## Required Local Checks

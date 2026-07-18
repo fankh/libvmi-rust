@@ -42,6 +42,7 @@ pub mod driver {
         ViewAccess, VmiEvent,
     };
     pub use vmi_driver_dump::DumpConnector;
+    pub use vmi_driver_libvirt::LibvirtConnector;
     pub use vmi_driver_qemu::QemuConnector;
     pub use vmi_driver_snapshot::SnapshotConnector;
     pub use vmi_driver_virtualbox::VirtualBoxConnector;

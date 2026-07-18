@@ -4,6 +4,7 @@ use vmi_arch_amd64::Amd64Translator;
 use vmi_artifact::SnapshotBundle;
 use vmi_core::VmiSession;
 use vmi_driver_dump::DumpConnector;
+use vmi_driver_libvirt::{LibvirtConnector, ProcessTransport as VirshProcessTransport};
 use vmi_driver_qemu::QemuConnector;
 use vmi_driver_snapshot::SnapshotConnector;
 use vmi_driver_virtualbox::{ProcessTransport, VirtualBoxConnector};
@@ -65,6 +66,11 @@ fn run_args(args: &[String]) -> Result<(), String> {
         Some("read-manifest") if args.len() == 5 => read_manifest(args),
         Some("read-vmware-vmem") if args.len() == 6 => read_vmware_vmem(args),
         Some("read-vmware-core") if args.len() == 5 => read_vmware_core(args),
+        Some("libvirt-status") if args.len() == 3 => libvirt_control(&args[2], "status"),
+        Some("libvirt-pause") if args.len() == 3 => libvirt_control(&args[2], "pause"),
+        Some("libvirt-resume") if args.len() == 3 => libvirt_control(&args[2], "resume"),
+        Some("libvirt-dump") if args.len() == 4 => libvirt_dump(args),
+        Some("libvirt-acquire") if args.len() == 6 => libvirt_acquire(args),
         Some("qemu-status") if args.len() == 3 => qemu_control(&args[2], "status"),
         Some("qemu-pause") if args.len() == 3 => qemu_control(&args[2], "pause"),
         Some("qemu-resume") if args.len() == 3 => qemu_control(&args[2], "resume"),
@@ -90,7 +96,7 @@ fn run_args(args: &[String]) -> Result<(), String> {
         _ => {
             let program = args.first().map(String::as_str).unwrap_or("vmi-cli");
             Err(format!(
-                "usage:\n  {program} read-raw|read-elf|read-xen-core|read-kdmp|read-lime|read-manifest <file> <gpa> <length>\n  {program} read-vmware-vmem <file.vmem> <physical-base> <gpa> <length>\n  {program} read-vmware-core <vmss2core-output> <gpa> <length>\n  {program} qemu-status|qemu-pause|qemu-resume <host:port>\n  {program} qemu-read <host:port> <gpa> <length>\n  {program} qemu-reg-read <host:port> <vcpu> <register>\n  {program} qemu-event <host:port> <timeout-ms> [event-kind]\n  {program} qemu-gdb-reg-write <qmp-host:port> <gdb-host:port> [vcpu] <register> <value>\n  {program} qemu-acquire <host:port> <output> <gpa> <length>\n  {program} qemu-dump <host:port> <output.elf>\n  {program} vbox-status <vm>\n  {program} vbox-reg-read <vm> <vcpu> <register>\n  {program} vbox-reg-write <vm> <vcpu> <register> <value>\n  {program} profile-symbol|profile-nearest <System.map> <name-or-address>\n  {program} profile-json-symbol|profile-json-offset <profile.json> <name>\n  {program} profile-pdb-symbol|profile-pdb-offset <file.pdb> <image-base> <name>\n  {program} linux-processes-elf <vmcore> <System.map> <cr3> <tasks_off> <pid_off> <comm_off> <comm_len> <limit>\n  {program} windows-processes-elf <vmcore> <symbols> <cr3> <links_off> <pid_off> <image_off> <image_len> <dtb_off> <limit>"
+                "usage:\n  {program} read-raw|read-elf|read-xen-core|read-kdmp|read-lime|read-manifest <file> <gpa> <length>\n  {program} read-vmware-vmem <file.vmem> <physical-base> <gpa> <length>\n  {program} read-vmware-core <vmss2core-output> <gpa> <length>\n  {program} libvirt-status|libvirt-pause|libvirt-resume <domain>\n  {program} libvirt-dump <domain> <output.elf>\n  {program} libvirt-acquire <domain> <output> <gpa> <length>\n  {program} qemu-status|qemu-pause|qemu-resume <host:port>\n  {program} qemu-read <host:port> <gpa> <length>\n  {program} qemu-reg-read <host:port> <vcpu> <register>\n  {program} qemu-event <host:port> <timeout-ms> [event-kind]\n  {program} qemu-gdb-reg-write <qmp-host:port> <gdb-host:port> [vcpu] <register> <value>\n  {program} qemu-acquire <host:port> <output> <gpa> <length>\n  {program} qemu-dump <host:port> <output.elf>\n  {program} vbox-status <vm>\n  {program} vbox-reg-read <vm> <vcpu> <register>\n  {program} vbox-reg-write <vm> <vcpu> <register> <value>\n  {program} profile-symbol|profile-nearest <System.map> <name-or-address>\n  {program} profile-json-symbol|profile-json-offset <profile.json> <name>\n  {program} profile-pdb-symbol|profile-pdb-offset <file.pdb> <image-base> <name>\n  {program} linux-processes-elf <vmcore> <System.map> <cr3> <tasks_off> <pid_off> <comm_off> <comm_len> <limit>\n  {program} windows-processes-elf <vmcore> <symbols> <cr3> <links_off> <pid_off> <image_off> <image_len> <dtb_off> <limit>"
             ))
         }
     }
@@ -113,6 +119,74 @@ fn vbox_session(vm: &str, capability: Capability) -> Result<VmiSession, String> 
         AttachRequest::any(CapabilitySet::from_caps([capability])),
     )
     .map_err(|error| error.to_string())
+}
+
+fn libvirt_session(domain: &str, capability: Capability) -> Result<VmiSession, String> {
+    let executable = env::var("VIRSH").unwrap_or_else(|_| "virsh".into());
+    let mut connector = LibvirtConnector::with_transport(
+        domain,
+        GuestArchitecture::Amd64,
+        Arc::new(VirshProcessTransport::new(executable)),
+    );
+    if let Ok(uri) = env::var("LIBVIRT_DEFAULT_URI") {
+        connector = connector.with_uri(uri);
+    }
+    VmiSession::attach(
+        &connector,
+        AttachRequest::any(CapabilitySet::from_caps([capability])),
+    )
+    .map_err(|error| error.to_string())
+}
+
+fn libvirt_control(domain: &str, operation: &str) -> Result<(), String> {
+    let session = libvirt_session(domain, Capability::Control)?;
+    let control = session
+        .session()
+        .control()
+        .map_err(|error| error.to_string())?;
+    match operation {
+        "pause" => control.pause().map_err(|error| error.to_string())?,
+        "resume" => control.resume().map_err(|error| error.to_string())?,
+        "status" => {}
+        _ => return Err("unsupported libvirt control operation".into()),
+    }
+    println!(
+        "{:?}",
+        control
+            .execution_state()
+            .map_err(|error| error.to_string())?
+    );
+    Ok(())
+}
+
+fn libvirt_dump(args: &[String]) -> Result<(), String> {
+    let session = libvirt_session(&args[2], Capability::Acquisition)?;
+    session
+        .session()
+        .acquisition()
+        .map_err(|error| error.to_string())?
+        .save_snapshot(&PathBuf::from(&args[3]))
+        .map_err(|error| error.to_string())?;
+    println!("saved libvirt ELF VM core to {}", args[3]);
+    Ok(())
+}
+
+fn libvirt_acquire(args: &[String]) -> Result<(), String> {
+    let start = Gpa::new(parse_number(&args[4])?);
+    let length = parse_number(&args[5])?;
+    let session = libvirt_session(&args[2], Capability::Acquisition)?;
+    session
+        .session()
+        .acquisition()
+        .map_err(|error| error.to_string())?
+        .save_physical_range(&PathBuf::from(&args[3]), start, length)
+        .map_err(|error| error.to_string())?;
+    println!(
+        "saved {length} bytes from GPA {:#x} to {}",
+        start.raw(),
+        args[3]
+    );
+    Ok(())
 }
 
 fn vbox_status(vm: &str) -> Result<(), String> {
@@ -656,6 +730,7 @@ mod tests {
             "read-kdmp",
             "read-vmware-vmem",
             "read-vmware-core",
+            "libvirt-acquire",
             "qemu-event",
             "qemu-gdb-reg-write",
             "vbox-status",

@@ -20,6 +20,7 @@ EXPECTED_PROVIDER_IDS = {
     "hyperv",
     "hyperv-core",
     "qemu-qmp",
+    "libvirt-qemu",
     "raw-dump",
     "snapshot-manifest",
     "virtualbox",

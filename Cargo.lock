@@ -574,6 +574,7 @@ dependencies = [
  "vmi-core",
  "vmi-driver-api",
  "vmi-driver-dump",
+ "vmi-driver-libvirt",
  "vmi-driver-qemu",
  "vmi-driver-snapshot",
  "vmi-driver-virtualbox",
@@ -635,6 +636,7 @@ dependencies = [
  "vmi-artifact",
  "vmi-core",
  "vmi-driver-dump",
+ "vmi-driver-libvirt",
  "vmi-driver-qemu",
  "vmi-driver-snapshot",
  "vmi-driver-virtualbox",
@@ -663,6 +665,15 @@ dependencies = [
 
 [[package]]
 name = "vmi-driver-dump"
+version = "1.0.0"
+dependencies = [
+ "vmi-artifact",
+ "vmi-driver-api",
+ "vmi-types",
+]
+
+[[package]]
+name = "vmi-driver-libvirt"
 version = "1.0.0"
 dependencies = [
  "vmi-artifact",

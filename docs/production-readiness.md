@@ -38,7 +38,7 @@ Every critical gate in `release-readiness.toml` must be `complete`. In addition:
 - **Supported target**: raw dump, manifest snapshots, converted/offline cores,
   VirtualBox cores, and QEMU.
 - **Preview target**: Xen.
-- **Experimental target**: live VirtualBox, Firecracker, Cloud Hypervisor,
+- **Experimental target**: live VirtualBox, libvirt QEMU/KVM, Firecracker, Cloud Hypervisor,
   Hyper-V live/saved-state, VMware live artifacts, and bhyve integrations.
 - **Internal**: the deterministic fake provider.
 

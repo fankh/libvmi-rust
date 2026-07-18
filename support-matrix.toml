@@ -32,6 +32,16 @@ optional_capabilities = ["register_write (with GDB endpoint)"]
 mechanism = "QMP query-status/stop/cont/dump-guest-memory and asynchronous events + HMP xp/info registers/pmemsave"
 
 [[providers]]
+id = "libvirt-qemu"
+implemented = true
+display_name = "libvirt QEMU/KVM"
+maturity = "experimental"
+v1_target = "experimental"
+platforms = ["linux"]
+capabilities = ["control", "acquisition"]
+mechanism = "virsh domain state/suspend/resume plus memory-only ELF core dump acquisition"
+
+[[providers]]
 id = "snapshot-manifest"
 implemented = true
 display_name = "Manifest Snapshot Provider"

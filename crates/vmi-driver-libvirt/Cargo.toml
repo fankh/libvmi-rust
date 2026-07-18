@@ -1,0 +1,19 @@
+[package]
+name = "vmi-driver-libvirt"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Libvirt-managed QEMU/KVM control and memory acquisition provider"
+repository.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+vmi-artifact = { version = "=1.0.0", path = "../vmi-artifact" }
+vmi-driver-api = { version = "=1.0.0", path = "../vmi-driver-api" }
+vmi-types = { version = "=1.0.0", path = "../vmi-types" }

@@ -43,6 +43,7 @@ pub use vmi::driver::CpuAccess
 pub use vmi::driver::DumpConnector
 pub use vmi::driver::EventAccess
 pub use vmi::driver::ExecutionState
+pub use vmi::driver::LibvirtConnector
 pub use vmi::driver::LifecycleEvent
 pub use vmi::driver::MemoryAccess
 pub use vmi::driver::MemoryWriteAccess

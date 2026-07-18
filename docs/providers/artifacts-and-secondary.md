@@ -29,6 +29,7 @@ supported in v1:
 | Provider | v1 boundary |
 | --- | --- |
 | Firecracker | Versioned memory snapshot manifest only; no REST lifecycle orchestration |
+| libvirt QEMU/KVM | Domain control and memory-only ELF acquisition; real-host and managed-platform matrices remain pending |
 | Cloud Hypervisor | Versioned memory snapshot manifest only; no REST lifecycle orchestration |
 | Hyper-V | Versioned saved-state manifest only; no native proprietary container decoder |
 | VMware | Contiguous flat `.vmem` or user-converted core only; sparse ESXi memory layouts require conversion and there is no automated snapshot orchestration |

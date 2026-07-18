@@ -23,6 +23,23 @@ if [ "$vmware_output" != '0000000000002000: 56 4d 49 21' ]; then
     exit 1
 fi
 
+cat >"$temporary/virsh" <<'EOF'
+#!/usr/bin/env sh
+case "$1" in
+    dumpxml) printf '%s\n' "<domain type='kvm'><name>guest</name></domain>" ;;
+    domstate) printf '%s\n' running ;;
+    suspend|resume) ;;
+    *) echo "unexpected fake virsh command: $*" >&2; exit 1 ;;
+esac
+EOF
+chmod +x "$temporary/virsh"
+libvirt_output=$(VIRSH="$temporary/virsh" cargo run --quiet -p vmi-cli -- \
+    libvirt-status guest)
+if [ "$libvirt_output" != 'Running' ]; then
+    printf 'unexpected libvirt status output:\n%s\n' "$libvirt_output" >&2
+    exit 1
+fi
+
 example_output=$(cargo run --quiet -p vmi --example inspect_raw -- \
     "$temporary/memory.raw" 0X0 4)
 if [ "$example_output" != '564d4921' ]; then
@@ -46,5 +63,6 @@ fi
 grep -F 'qemu-event' "$temporary/usage.err" >/dev/null
 grep -F 'vbox-reg-write' "$temporary/usage.err" >/dev/null
 grep -F 'read-vmware-core' "$temporary/usage.err" >/dev/null
+grep -F 'libvirt-acquire' "$temporary/usage.err" >/dev/null
 
 echo 'CLI and facade example smoke tests passed'

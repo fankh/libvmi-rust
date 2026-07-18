@@ -11,6 +11,7 @@ functionality.
 | [Current implementation](current-implementation.md) | What is implemented, tested, and still missing |
 | [Production readiness](production-readiness.md) | v1 provider tiers, release gates, and exit criteria |
 | [QEMU provider qualification](providers/qemu.md) | Supported-tier contract, evidence, and remaining real-host gates |
+| [libvirt QEMU/KVM provider](providers/libvirt-qemu.md) | Managed-domain control, ELF acquisition, and experimental boundary |
 | [Xen provider qualification](providers/xen.md) | Preview-tier capability activation, evidence, and native-host limits |
 | [VirtualBox provider qualification](providers/virtualbox.md) | Preview-tier transport evidence and vendor limitations |
 | [VMware artifact qualification](providers/vmware.md) | Offline `.vmem`/converted-core scope, qualifier, and limitations |

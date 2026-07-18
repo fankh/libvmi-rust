@@ -4,8 +4,8 @@ Updated: 2026-07-14
 
 The repository provides a contract foundation and an offline vertical slice for
 a native Rust VMI framework. It can inspect raw physical-memory artifacts,
-including pages acquired from QEMU, and provides capability-limited live QEMU
-VirtualBox, and Xen `xl` attachment.
+including pages acquired from QEMU, and provides capability-limited direct QEMU,
+libvirt-managed QEMU/KVM, VirtualBox, and Xen `xl` attachment.
 
 ## Implemented Crates
 
@@ -23,6 +23,7 @@ VirtualBox, and Xen `xl` attachment.
 | `vmi-arch-amd64` | Four/five-level AMD64 translation with 4 KiB, 2 MiB, and 1 GiB pages |
 | `vmi-arch-aarch64` | Configurable AArch64 stage-1 translation for 4/16/64 KiB granules and block mappings |
 | `vmi-driver-qemu` | Live QMP physical/register reads, status, pause/resume, asynchronous events, and physical-range acquisition over TCP or Unix sockets |
+| `vmi-driver-libvirt` | Managed QEMU/KVM domain validation, control, memory-only ELF acquisition, and physical-range extraction through virsh |
 | `vmi-driver-snapshot` | Generic, VirtualBox, microVM, VMware, Hyper-V, and bhyve snapshots |
 | `vmi-driver-virtualbox` | VBoxManage registers, state/control, snapshot-backed live memory reads, core acquisition, and range extraction |
 | `vmi-driver-xen` | Live xl control/acquisition plus optional libxenctrl memory, xenctx registers, and vm_event transport integration |
